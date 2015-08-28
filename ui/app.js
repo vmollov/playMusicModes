@@ -3,9 +3,15 @@
 require('angular');
 require('angular-route');
 
+module.exports = function(moduleName){
+    return angular.module(moduleName, ['ngRoute'])
 
-module.exports = angular.module('playMusicModes', ['ngRoute'])
+        .config(['$routeProvider', function($routeProvider) {
+            $routeProvider.when('/', {
+                templateUrl: '/views/home.html',
+                controller: 'homeCtrl'
+            });
 
-.config(['$routeProvider', function($routeProvider) {
-    $routeProvider.otherwise({redirectTo: '/'});
-}]);
+            $routeProvider.otherwise({redirectTo: '/'});
+        }]);
+};

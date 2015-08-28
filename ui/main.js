@@ -1,3 +1,12 @@
-var app = require('./app');
+'use strict';
 
-console.log('done');
+var
+    app = require('./app')('playMusicModes');
+
+//adjust for browser differences
+navigator.getUserMedia = navigator.getUserMedia
+    || navigator.webkitGetUserMedia
+    || navigator.mozGetUserMedia;
+
+//load views
+require('./views/home')(app);

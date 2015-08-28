@@ -14,16 +14,16 @@ var
     server = require('gulp-express'),
     uglify = require('gulp-uglify'),
     backEndUnitTestsGlob = [
-        'server/**/*.spec.js'
+        './server/**/*.spec.js'
     ],
     frontEndUnitTestGlob = [
-        'node_modules/angular/angular.js',
-        'node_modules/angular-mocks/angular-mocks.js',
-        'node_modules/angular-route/angular-route.js',
-        'node_modules/angular-animate/angular-animate.js',
-        'ui/*.js',
-        'ui/**/*.js',
-        'ui/directives/*.html'
+        './node_modules/angular/angular.js',
+        './node_modules/angular-mocks/angular-mocks.js',
+        './node_modules/angular-route/angular-route.js',
+        './node_modules/angular-animate/angular-animate.js',
+        './ui/*.js',
+        './ui/**/*.js',
+        './ui/directives/*.html'
     ],
     serverInitFile = 'server/app.js',
     errorHandler = function (err) {
@@ -44,7 +44,7 @@ gulp.task('buildHtml', function(){
     return gulp.src('ui/index.html')
         //.pipe(processHtml())
         .pipe(minifyHtml())
-        .pipe(gulp.dest('public/'));
+        .pipe(gulp.dest('./public/'));
 });
 
 gulp.task('buildAngularTemplates', function(){
@@ -68,10 +68,10 @@ gulp.task('browserifyJs', function(){
         .pipe(gulp.dest('.tmp/'));
 });
 
-gulp.task('buildJs', ['browserifyJs', 'buildAngularTemplates'], function(){
-    return gulp.src(['.tmp/script.js', '.tmp/angular-js-templates/*'])
+gulp.task('buildJs', ['buildAngularTemplates', 'browserifyJs'], function(){
+    return gulp.src(['./.tmp/script.js', './.tmp/angular-js-templates/*'])
         .pipe(concat('script.js'))
-        .pipe(gulp.dest('public/'))
+        .pipe(gulp.dest('./public/'))
         .on('end', function(){
             del(['.tmp'], null);
         });
@@ -85,7 +85,7 @@ gulp.task('runBackendTests', function(){
 
 gulp.task('runFrontendTests', function(){
     return gulp.src(frontEndUnitTestGlob).pipe(karma({
-        configFile: 'karma.conf.js'
+        configFile: './karma.conf.js'
     }));
 });
 
@@ -104,20 +104,20 @@ gulp.task('serverRestart', function(){
 gulp.task('watch', function(){
     //front end changes
     gulp.watch([
-        'ui/*.js',
-        'ui/**/*.js',
-        'ui/*.html',
-        'ui/**/*.html',
-        'ui/*.less',
-        'ui/**/*.less'
+        './ui/*.js',
+        './ui/**/*.js',
+        './ui/*.html',
+        './ui/**/*.html',
+        './ui/*.less',
+        './ui/**/*.less'
     ], ['buildJs', 'less', 'buildHtml']);
 
-    gulp.watch(['public/*'], function(event){
+    gulp.watch(['./public/*'], function(event){
         server.notify(event);
     });
 
     //back end changes
-    gulp.watch(['server/**/*.js', 'server/*.js' ], ['serverRestart', 'runBackendTests']);
+    gulp.watch(['./server/**/*.js', './server/*.js' ], ['serverRestart', 'runBackendTests']);
 });
 
 gulp.task('default', [

@@ -1,5 +1,6 @@
 {
   "globalstrict": true,
+  "laxbreak": true,
   "globals": {
     "angular": false,
     "require": false,
@@ -10,6 +11,7 @@
     "afterEach": false,
     "module": false,
     "inject": false,
-    "console": false
+    "console": false,
+    "navigator": true
   }
 }
