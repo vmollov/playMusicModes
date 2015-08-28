@@ -30876,7 +30876,7 @@ module.exports = function(app){
 
 angular.module('playMusicModes').run(['$templateCache', function($templateCache) {
     $templateCache.put('/views/home.html',
-        "<div id=\"output\" style=\"font-size: 24px\">\n    Here will be the detected output:<br>\n    {{detectedPitch.letter}}\n</div>\n<div id=\"centsOff\"></div>\n<button id=\"startListening\" data-ng-click=\"start()\">Listen</button>\n<button id=\"stopListening\" data-ng-click=\"stop()\">Stop</button>");
+        "<div id=\"output\">\n    Here will be the detected output:<br>\n    {{detectedPitch.letter}}\n</div>\n<div id=\"centsOff\"></div>\n<button id=\"startListening\" data-ng-click=\"start()\">Listen</button>\n<button id=\"stopListening\" data-ng-click=\"stop()\">Stop</button>");
 }]);
 angular.module('playMusicModes').run(['$templateCache', function($templateCache) {
     $templateCache.put('/directives/test.html',
