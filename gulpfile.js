@@ -106,11 +106,17 @@ gulp.task('watch', function(){
     gulp.watch([
         'ui/*.js',
         'ui/**/*.js',
-        'ui/*.html',
-        'ui/**/*.html',
+        'ui/**/*.html'
+    ], ['compileJs']);
+
+    gulp.watch([
         'ui/*.less',
         'ui/**/*.less'
-    ], ['compileJs', 'compileLess', 'compileHtml']);
+    ], ['compileLess']);
+
+    gulp.watch([
+        'ui/index.html'
+    ], ['compileHtml']);
 
     gulp.watch(['public/*'], function(event){
         server.notify(event);

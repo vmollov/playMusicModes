@@ -2,7 +2,7 @@
 
 module.exports = function(app){
 
-    app.factory('audioSvc', ['$q',
+    app.factory('audioInput', ['$q',
         function($q){
             var
                 streamDeferred,
@@ -37,7 +37,6 @@ module.exports = function(app){
 
             return {
                 getAnalyser: function(){
-                    console.log(streamDeferred);
                     var streamPromise =
                         (streamDeferred && streamDeferred.promise.$$state.status === 1 && streamDeferred.promise) || getStream();
 

@@ -2,10 +2,10 @@
 
 module.exports = function(app){
 
-    require('./audioSvc')(app);
+    require('./audioInput')(app);
 
-    app.factory('pitchSvc', ['audioSvc', '$timeout',
-        function(audioSvc, $timeout){
+    app.factory('noteSequenceDetect', ['audioInput', '$timeout',
+        function(audioInput, $timeout){
             var
                 pitchDetector = require('../model/pitchDetector'),
                 noteUtil = require('../model/noteUtil'),
@@ -18,10 +18,20 @@ module.exports = function(app){
                     var estimate = pitchDetector.detect(analyser);
 
                     if(estimate.foundPitch &&  estimate.freq < 1500){
-                        /*detectedPitches.push(noteUtil.noteFromFrequency(estimate.freq));
-                        console.log(detectedPitches[detectedPitches.length -1]);*/
                         detectedPitch = noteUtil.noteFromFrequency(estimate.freq);
-                        console.log(detectedPitch);
+
+                        if(!detectedPitches.length || detectedPitch.number !== detectedPitches[detectedPitches.length - 1].number){
+                            //new pitch detected - add it to the collection
+                            detectedPitches.push({
+                                number: detectedPitch.number,
+                                letter: detectedPitch.letter,
+                                octave: detectedPitch.octave,
+                                centsOffTimeProgression: []
+                            });
+                        }
+
+                        //add the newly detected centsOff to the pitch
+                        detectedPitches[detectedPitches.length - 1].centsOffTimeProgression.push(detectedPitch.centsOff);
                     }
 
                     timeoutId = $timeout(updatePitch);
@@ -29,7 +39,7 @@ module.exports = function(app){
 
             return {
                 startPitchDetection: function(){
-                    audioSvc.getAnalyser().then(
+                    audioInput.getAnalyser().then(
                         function(objAnalyser){
                             analyser = objAnalyser;
                             updatePitch();
@@ -40,10 +50,11 @@ module.exports = function(app){
                     if(timeoutId) {
                         $timeout.cancel(timeoutId);
                         timeoutId = undefined;
+                        console.log(detectedPitches);
                     }
                 },
-                getDetectedPitch: function(){
-                    return detectedPitch;
+                getDetectedPitches: function(){
+                    return detectedPitches;
                 }
             };
         }

@@ -2,26 +2,26 @@
 
 module.exports = function(app){
 
-    require('../services/pitchSvc')(app);
+    require('../services/noteSequenceDetect')(app);
 
-    app.controller('homeCtrl', ['$scope', 'pitchSvc',
-        function($scope, pitchSvc){
+    app.controller('homeCtrl', ['$scope', 'noteSequenceDetect',
+        function($scope, noteSequenceDetect){
             var pitchDetectionWatch;
 
             $scope.start = function(){
-                pitchSvc.startPitchDetection();
+                noteSequenceDetect.startPitchDetection();
 
                 if(pitchDetectionWatch) return;
 
                 pitchDetectionWatch = $scope.$watch(function() {
-                    return pitchSvc.getDetectedPitch();
-                }, function(newValue, oldValue){
-                    $scope.detectedPitch = newValue;
+                    return noteSequenceDetect.getDetectedPitches();
+                }, function(newValue){
+                    $scope.detectedPitches = newValue;
                 });
 
             };
             $scope.stop = function(){
-                pitchSvc.stopPitchDetection();
+                noteSequenceDetect.stopPitchDetection();
                 if(pitchDetectionWatch) {
                     pitchDetectionWatch();
                     pitchDetectionWatch = undefined;
