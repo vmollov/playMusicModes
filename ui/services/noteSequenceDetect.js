@@ -17,7 +17,7 @@ module.exports = function(app){
                 updatePitch = function(){
                     var estimate = pitchDetector.detect(analyser);
 
-                    if(estimate.foundPitch &&  estimate.freq < 1500){
+                    if(estimate.foundPitch &&  estimate.freq < 16000){
                         detectedPitch = noteUtil.noteFromFrequency(estimate.freq);
 
                         if(!detectedPitches.length || detectedPitch.number !== detectedPitches[detectedPitches.length - 1].number){
