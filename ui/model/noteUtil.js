@@ -24,7 +24,7 @@ var
     },
     noteFromNameString = function(noteString){
         if(!isNoteStringValid(noteString)){
-            throw Error("Invalid note string", noteString);
+            throw Error("Invalid note string " + noteString);
         }
 
         var
@@ -54,12 +54,12 @@ var
             accidental: accidental,
             octave: octave,
             midiValue: midiValue,
-            stringName: name + accidental + octave
+            fullName: name + accidental + octave
         };
     },
     noteFromNumber = function(number){
         if(number < 1 || number > 132){
-            throw Error('Cannot calculate note from number', number);
+            throw Error('Cannot calculate note from number' + number);
         }
 
         var
@@ -77,34 +77,47 @@ var
             note = noteFromNumber(number);
 
         if(!note){
-            throw Error('Cannot calculate note from frequency', frequency);
+            throw Error('Cannot calculate note from frequency' + frequency);
         }
 
         note.centsOff = Math.floor(1200 * Math.log( frequency / frequencyForNoteNumber(number)) / Math.log(2));
 
         return note;
     },
-    noteFromInterval = function(startingNoteStr, semitones, steps){
+    noteFromInterval = function(startingNote, semitones, steps){
+        if(startingNote.midiValue + semitones < 1 || startingNote.midiValue + semitones > 130){
+            throw Error("Cannot create note from " + startingNote.fullName + ", semitones: " + semitones + ", steps: " + steps);
+        }
+
         var
-            startingNote = noteFromNameString(startingNoteStr),
-            targetNoteMidiValue = (startingNote.midiValue % 12) + semitones,
-            targetNoteBaseValue = (getBaseValueForNoteName(startingNote.name) + steps) % 7,
-            enharmonicsSet = enharmonics[targetNoteMidiValue],
+            startingNoteIndex = startingNote.midiValue % 12,
+            targetNoteIndex = (startingNote.midiValue + semitones) % 12,
+            targetNoteBaseSteps = (Number(getBaseValueForNoteName(startingNote.name)) + steps) % 7,
+            targetNoteBaseValue = targetNoteBaseSteps < 0
+                ? targetNoteBaseSteps + 7
+                : targetNoteBaseSteps,
+            enharmonicsSet = enharmonics[targetNoteIndex],
             enharmonicObject = enharmonicsSet[enharmonics.baseNoteToIntMap[targetNoteBaseValue]],
             targetOctave = enharmonicObject
                 ? Number(startingNote.octave) + Number(enharmonicObject.octaveOffset)
-                : undefined;
+                : undefined,
+            targetNoteNumber = startingNoteIndex + semitones;
 
         if(!enharmonicObject || !targetOctave){
-            throw Error("Cannot calculate note from interval for", startingNoteStr, semitones, steps);
+            throw Error("Cannot create note from " + startingNote.fullName + ", semitones: " + semitones + ", steps: " + steps);
+        }
+
+        while(targetNoteNumber >= 12){
+            targetOctave++;
+            targetNoteNumber -= 12;
+        }
+        while(targetNoteNumber < 0){
+            targetOctave--;
+            targetNoteNumber += 12;
         }
 
         return noteFromNameString(enharmonicObject.note + targetOctave);
-
     };
-
-window.noteFromNumber = noteFromNumber;
-window.noteFromInterval = noteFromInterval;
 
 module.exports = {
     noteFromFrequency: noteFromFrequency,
