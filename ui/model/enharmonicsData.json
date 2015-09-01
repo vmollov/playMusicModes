@@ -1,0 +1,180 @@
+{
+  "baseNoteValues":{
+    "C": 0,
+    "D": 2,
+    "E": 4,
+    "F": 5,
+    "G": 7,
+    "A": 9,
+    "B": 11
+  },
+  "baseNoteToIntMap":{
+    "0": "C",
+    "1": "D",
+    "2": "E",
+    "3": "F",
+    "4": "G",
+    "5": "A",
+    "6": "B"
+  },
+  "0": {
+    "B": {
+      "note": "Bs",
+      "octaveOffset": -1
+    },
+    "C":{
+      "note": "C",
+      "octaveOffset": 0
+    },
+    "D":{
+      "note": "Dd",
+      "octaveOffset": 0
+    },
+    "default": "C"
+  },
+  "1": {
+    "C": {
+      "note": "Cs",
+      "octaveOffset": 0
+    },
+    "D":{
+      "note": "Df",
+      "octaveOffset": 0
+    },
+    "default": "Cs"
+  },
+  "2": {
+    "C": {
+      "note": "Cx",
+      "octaveOffset": 0
+    },
+    "D":{
+      "note": "D",
+      "octaveOffset": 0
+    },
+    "E":{
+      "note": "Ed",
+      "octaveOffset": 0
+    },
+    "default": "D"
+  },
+  "3": {
+    "D": {
+      "note": "Ds",
+      "octaveOffset": 0
+    },
+    "E":{
+      "note": "Ef",
+      "octaveOffset": 0
+    },
+    "default": "Ds"
+  },
+  "4": {
+    "D": {
+      "note": "Dx",
+      "octaveOffset": 0
+    },
+    "E":{
+      "note": "E",
+      "octaveOffset": 0
+    },
+    "F":{
+      "note": "Ff",
+      "octaveOffset": 0
+    },
+    "default": "Es"
+  },
+  "5": {
+    "E": {
+      "note": "Es",
+      "octaveOffset": 0
+    },
+    "F":{
+      "note": "F",
+      "octaveOffset": 0
+    },
+    "G":{
+      "note": "Gd",
+      "octaveOffset": 0
+    },
+    "default": "F"
+  },
+  "6": {
+    "F": {
+      "note": "Fs",
+      "octaveOffset": 0
+    },
+    "G":{
+      "note": "Gf",
+      "octaveOffset": 0
+    },
+    "default": "Fs"
+  },
+  "7": {
+    "F": {
+      "note": "Fx",
+      "octaveOffset": 0
+    },
+    "G":{
+      "note": "G",
+      "octaveOffset": 0
+    },
+    "A":{
+      "note": "Ad",
+      "octaveOffset": 0
+    },
+    "default": "G"
+  },
+  "8": {
+    "G": {
+      "note": "Gs",
+      "octaveOffset": 0
+    },
+    "A":{
+      "note": "Af",
+      "octaveOffset": 0
+    },
+    "default": "Gs"
+  },
+  "9": {
+    "G": {
+      "note": "Gx",
+      "octaveOffset": 0
+    },
+    "A":{
+      "note": "A",
+      "octaveOffset": 0
+    },
+    "B":{
+      "note": "Bd",
+      "octaveOffset": 0
+    },
+    "default": "A"
+  },
+  "10": {
+    "A": {
+      "note": "As",
+      "octaveOffset": 0
+    },
+    "B":{
+      "note": "Bf",
+      "octaveOffset": 0
+    },
+    "default": "As"
+  },
+  "11": {
+    "A": {
+      "note": "Ax",
+      "octaveOffset": 0
+    },
+    "B":{
+      "note": "B",
+      "octaveOffset": 0
+    },
+    "C":{
+      "note": "Cf",
+      "octaveOffset": 1
+    },
+    "default": "B"
+  }
+}

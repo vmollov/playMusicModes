@@ -3,6 +3,7 @@
 module.exports = function(app){
 
     require('../services/noteSequenceDetect')(app);
+    require('../model/scales')
 
     app.controller('homeCtrl', ['$scope', 'noteSequenceDetect',
         function($scope, noteSequenceDetect){

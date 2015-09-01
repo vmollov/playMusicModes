@@ -1,0 +1,377 @@
+{
+  "ModeGroups" : {
+    "3" : "Jazz Scales",
+    "4" : "Other Heptatonic Scales",
+    "5" : "Pentatonic Scales",
+    "1" : "Common Scales",
+    "6" : "Symmetric Scales",
+    "2" : "Ancient Modes"
+  },
+  "ModeDefinitions" : {
+    "Natural Minor\/Aeolian" : {
+      "order" : "2",
+      "startEnabled" : true,
+      "groupId" : "1",
+      "pattern" : [2,1,2,2,1,2,2]
+    },
+    "Dorian Flat 2" : {
+      "listenFor" : [
+        "Similarity to Dorian",
+        "Half step between first and second"
+      ],
+      "order" : "5",
+      "groupId" : "4",
+      "description" : "The Dorian flat 2 scale is a natural minor scale with the second scale degree lowered and the sixth scale degree raised by one half step. This creates a scale similar to the Dorian ancient mode with a half step between the first and second scale degrees.",
+      "pattern" : [1,2,2,2,2,1,2]
+    },
+    "Half-Whole Octatonic" : {
+      "listenFor" : [
+        "Eight scale degrees",
+        "Half step between first and second"
+      ],
+      "stepPattern" : [1,1,0,1,1,1,1,1],
+      "stepPatternDesc" : [-1,-1,-1,-1,-1,0,-1,-1],
+      "variationOf" : "Whole-Half Octatonic",
+      "order" : "2",
+      "startEnabled" : true,
+      "groupId" : "6",
+      "description" : "The half-whole octatonic scale consists of eight notes constructed by alternating between half and whole steps, beginning with a half step.",
+      "pattern" : [1,2,1,2,1,2,1,2]
+    },
+    "Dorian" : {
+      "listenFor" : [
+        "Similarity to natural minor scale",
+        "Raised sixth"
+      ],
+      "order" : "2",
+      "startEnabled" : true,
+      "groupId" : "2",
+      "description" : "The Dorian mode is a natural minor scale with the sixth scale degree raised by one half step.",
+      "pattern" : [2,1,2,2,2,1,2]
+    },
+    "Major Pentatonic" : {
+      "listenFor" : [
+        "Five scale degrees",
+        "Notes based on major scale",
+        "Two minor third leaps"
+      ],
+      "stepPattern" : [1,1,2,1,2],
+      "stepPatternDesc" : [2,1,2,1,1],
+      "variationOf" : "Minor Pentatonic",
+      "order" : "1",
+      "startEnabled" : true,
+      "groupId" : "5",
+      "description" : "The major pentatonic scale is comprised of five notes which correspond to the first, second, third, fifth and sixth scale degrees of the major scale. This creates a leap of a minor third between the third and fourth scale degrees, and between the seventh and the repeat of the tonic note at the top of the scale. It is important to correctly identify the placement of the two minor third leaps as the minor pentatonic scale also features two minor third leaps.",
+      "pattern" : [2,2,3,2,3]
+    },
+    "Major\/Ionian" : {
+      "order" : "1",
+      "startEnabled" : true,
+      "groupId" : "1",
+      "pattern" : [2,2,1,2,2,2,1]
+    },
+    "Minor Bebop" : {
+      "listenFor" : [
+        "Eight scale degrees",
+        "Similarity to Dorian",
+        "Run of three chromatic notes from third through fifth"
+      ],
+      "stepPattern" : [1,1,0,1,1,1,1,1],
+      "stepPatternDesc" : [-1,-1,-1,-1,-1,0,-1,-1],
+      "order" : "3",
+      "groupId" : "3",
+      "description" : "The minor bebop scale is an eight-note scale constructed by taking the Dorian mode and adding a chromatic note between its third and fourth scale degrees. This creates half step intervals between scale degrees three, four and five of the minor bebop scale, adding a chromatic flavor.",
+      "pattern" : [2,1,1,1,2,2,1,2]
+    },
+    "Whole-Half Octatonic" : {
+      "listenFor" : [
+        "Eight scale degrees",
+        "Whole step between first and second"
+      ],
+      "stepPattern" : [1,1,1,0,1,1,1,1],
+      "stepPatternDesc" : [-1,-1,-1,-1,0,-1,-1,-1],
+      "variationOf" : "Half-Whole Octatonic",
+      "order" : "1",
+      "startEnabled" : true,
+      "groupId" : "6",
+      "description" : "The whole-half octatonic scale consists of eight notes constructed by alternating between whole and half steps, beginning with a whole step.",
+      "pattern" : [2,1,2,1,2,1,2,1]
+    },
+    "Natural Minor" : {
+      "order" : "2",
+      "patternOf" : "Natural Minor\/Aeolian",
+      "startEnabled" : true,
+      "groupId" : "1",
+      "description" : "The natural minor scale is formed by taking its relative major scale (the major scale with the same key signature) and building the scale up using the same notes, starting from the major scale’s sixth scale degree. The sound of the natural minor scale differs from the sound of the major scale in that the third, sixth and seventh scale degrees are lowered by one half step.  This scale is also equivalent to the Aeolian ancient mode.",
+      "listenFor" : [
+        "Lowered third, sixth and seventh (from major scale)"
+      ]
+    },
+    "Harmonic Major" : {
+      "listenFor" : [
+        "Similarity to major scale",
+        "Augmented second between sixth and seventh"
+      ],
+      "variationOf" : "Harmonic Minor",
+      "order" : "1",
+      "groupId" : "4",
+      "description" : "The harmonic major scale is a major scale with the sixth scale degree lowered by one half step. This creates an augmented second between the sixth and seventh scale degrees.",
+      "pattern" : [2,2,1,2,1,3,1]
+    },
+    "Major" : {
+      "order" : "1",
+      "patternOf" : "Major\/Ionian",
+      "startEnabled" : true,
+      "groupId" : "1",
+      "description" : "The major scale is one of the most common scales and the foundation upon which to learn the other scales and modes. It is the one taught in the song \"Do-Re-Mi\" from Rodgers and Hammerstein's The Sound of Music. This scale is also equivalent to the Ionian ancient mode.",
+      "listenFor" : [
+        "Familiar \"do-re-mi-fa-sol-la-ti-do\" sequence"
+      ]
+    },
+    "Double Harmonic Major" : {
+      "listenFor" : [
+        "Major quality with two augmented seconds"
+      ],
+      "variationOf" : "Double Harmonic Minor",
+      "order" : "3",
+      "groupId" : "4",
+      "description" : "The double harmonic major scale is a major scale with the second and sixth scale degrees lowered by one half step. This creates an augmented second between the second and third scale degrees, as well as between the sixth and seventh scale degrees. It can also be thought of as a harmonic major scale with the second scale degree lowered by one half step.",
+      "pattern" : [1,3,1,2,1,3,1]
+    },
+    "Dominant Bebop" : {
+      "listenFor" : [
+        "Eight scale degrees",
+        "Similarity to Mixolydian",
+        "Run of three chromatic notes from seventh through upper first"
+      ],
+      "stepPattern" : [1,1,1,1,1,1,0,1],
+      "stepPatternDesc" : [-1,0,-1,-1,-1,-1,-1,-1],
+      "variationOf" : "Major Bebop",
+      "order" : "4",
+      "groupId" : "3",
+      "description" : "The dominant bebop scale is an eight-note scale constructed by taking the Mixolydian mode and adding a chromatic note between its seventh scale degree and the upper repeat of the tonic note. This creates half step intervals between scale degrees seven, eight, and the upper repeat of one, adding a chromatic flavor.",
+      "pattern" : [2,2,1,2,2,1,1,1]
+    },
+    "Ionian" : {
+      "order" : "1",
+      "patternOf" : "Major\/Ionian",
+      "startEnabled" : true,
+      "groupId" : "2",
+      "description" : "The Ionian mode is identical to the major scale.",
+      "listenFor" : [
+        "Major scale"
+      ]
+    },
+    "Melodic Major" : {
+      "listenFor" : [
+        "Change between ascending and descending progressions",
+        "Major scale when ascending",
+        "Lowered sixth and seventh when descending"
+      ],
+      "patternDesc" : [-2,-2,-1,-2,-1,-2,-2],
+      "variationOf" : "Melodic Minor",
+      "order" : "2",
+      "groupId" : "4",
+      "description" : "The melodic major scale's notes alter depending on whether one is playing it ascending from bottom to top, or descending from top to bottom.  When ascending, it is identical to a major scale.  When descending, the sixth and seventh scale degrees are lowered by one half step.",
+      "pattern" : [2,2,1,2,2,2,1]
+    },
+    "Minor Pentatonic" : {
+      "listenFor" : [
+        "Five scale degrees",
+        "Notes based on natural minor scale",
+        "Two minor third leaps"
+      ],
+      "stepPattern" : [2,1,1,2,1],
+      "stepPatternDesc" : [-1,-2,-1,-1,-2],
+      "variationOf" : "Major Pentatonic",
+      "order" : "2",
+      "startEnabled" : true,
+      "groupId" : "5",
+      "description" : "The minor pentatonic scale is comprised of five notes which correspond to the first, third, fourth, fifth and seventh scale degrees of the natural minor scale. This creates a leap of a minor third between the first and second scale degrees, and between the fourth and fifth scale degrees. It is important to correctly identify the placement of the two minor third leaps as the major pentatonic scale also features two minor third leaps.",
+      "pattern" : [3,2,2,3,2]
+    },
+    "Lydian Dominant" : {
+      "listenFor" : [
+        "Similarity to Lydian",
+        "Lowered seventh",
+        "Characteristics of both Lydian and Mixolydian"
+      ],
+      "order" : "7",
+      "groupId" : "4",
+      "description" : "The Lydian dominant scale is a major scale with the fourth scale degree raised and the seventh scale degree lowered by one half step. The scale gets its name from its similarity to the Lydian mode and the dominant sound of the Mixolydian mode.",
+      "pattern" : [2,2,2,1,2,1,2]
+    },
+    "Mixolydian Flat 6" : {
+      "listenFor" : [
+        "Similarity to Mixolydian with lowered sixth",
+        "Identical to descending melodic major scale"
+      ],
+      "order" : "8",
+      "groupId" : "4",
+      "description" : "The Mixolydian flat 6 scale is a major scale with the sixth and seventh scale degrees lowered by one half step. This scale is also identical to the descending form of the melodic major scale.",
+      "pattern" : [2,2,1,2,1,2,2]
+    },
+    "Whole Tone" : {
+      "listenFor" : [
+        "Six scale degrees",
+        "Scale consists only of whole steps"
+      ],
+      "stepPattern" : [1,1,1,1,1,2],
+      "stepPatternDesc" : [-2,-1,-1,-1,-1,-1],
+      "order" : "3",
+      "startEnabled" : true,
+      "groupId" : "6",
+      "description" : "The whole tone scale contains six notes constructed by placing each note a whole step higher than the previous note.",
+      "pattern" : [2,2,2,2,2,2]
+    },
+    "Altered" : {
+      "listenFor" : [
+        "Half step between first and second",
+        "Half step between third and fourth"
+      ],
+      "order" : "10",
+      "groupId" : "4",
+      "description" : "The altered scale is a dominant scale that provides both the raised and lowered ninth, and the raised and lowered fifth. It is built using the pattern half-whole-half-whole-whole-whole-whole.",
+      "pattern" : [1,2,1,2,2,2,2]
+    },
+    "Harmonic Minor" : {
+      "listenFor" : [
+        "Similarity to natural minor scale",
+        "Augmented second between sixth and seventh"
+      ],
+      "variationOf" : "Harmonic Major",
+      "order" : "3",
+      "startEnabled" : true,
+      "groupId" : "1",
+      "description" : "The harmonic minor scale is the natural minor scale with the seventh scale degree raised by one half step. This creates an augmented second between the sixth and seventh scale degrees.",
+      "pattern" : [2,1,2,2,1,3,1]
+    },
+    "Mixolydian" : {
+      "listenFor" : [
+        "Similarity to major scale",
+        "Lowered seventh"
+      ],
+      "order" : "5",
+      "startEnabled" : true,
+      "groupId" : "2",
+      "description" : "The Mixolydian mode is a major scale with the seventh scale degree lowered by one half step. This is sometimes referred to as a dominant scale because a dominant seventh chord can be built from it.",
+      "pattern" : [2,2,1,2,2,1,2]
+    },
+    "Blues" : {
+      "listenFor" : [
+        "Six scale degrees",
+        "Similarity to minor pentatonic",
+        "Run of three chromatic notes from third through fifth"
+      ],
+      "stepPattern" : [2,1,0,1,2,1],
+      "stepPatternDesc" : [-1,-2,0,-1,-1,-2],
+      "order" : "1",
+      "groupId" : "3",
+      "description" : "The blues scale is a six-note scale constructed by taking the minor pentatonic scale and adding a chromatic note between its third and fourth scale degrees. This creates half step intervals between scale degrees three, four and five of the blues scale, adding a chromatic flavor.",
+      "pattern" : [3,2,1,1,3,2]
+    },
+    "Phrygian" : {
+      "listenFor" : [
+        "Similarity to natural minor scale",
+        "Lowered second"
+      ],
+      "variationOf" : "Locrian",
+      "order" : "3",
+      "startEnabled" : true,
+      "groupId" : "2",
+      "description" : "The Phrygian mode is a natural minor scale with the second scale degree lowered by one half step. This gives the mode its characteristic \"flamenco\" flavor.",
+      "pattern" : [1,2,2,2,1,2,2]
+    },
+    "Aeolian" : {
+      "order" : "6",
+      "patternOf" : "Natural Minor\/Aeolian",
+      "startEnabled" : true,
+      "groupId" : "2",
+      "description" : "The Aeolian mode is identical to the natural minor scale.",
+      "listenFor" : [
+        "Natural minor scale"
+      ]
+    },
+    "Major Bebop" : {
+      "listenFor" : [
+        "Eight scale degrees",
+        "Similarity to major scale",
+        "Run of three chromatic notes from fifth through seventh"
+      ],
+      "stepPattern" : [1,1,1,1,0,1,1,1],
+      "stepPatternDesc" : [-1,-1,0,-1,-1,-1,-1,-1],
+      "variationOf" : "Dominant Bebop",
+      "order" : "2",
+      "groupId" : "3",
+      "description" : "The major bebop scale is an eight-note scale constructed by taking the major scale and adding a chromatic note between its fifth and sixth scale degrees. This creates half step intervals between scale degrees five, six and seven of the major bebop scale, adding a chromatic flavor.",
+      "pattern" : [2,2,1,2,1,1,2,1]
+    },
+    "Locrian Sharp 2" : {
+      "listenFor" : [
+        "Similarity to Locrian",
+        "Natural minor with lowered fifth"
+      ],
+      "order" : "9",
+      "groupId" : "4",
+      "description" : "The Locrian sharp 2 scale is a natural minor scale with the fifth scale degree lowered by one half step. It gets its name from its similarity to the Locrian mode.",
+      "pattern" : [2,1,2,1,2,2,2]
+    },
+    "Melodic Minor" : {
+      "listenFor" : [
+        "Change between ascending and descending progressions",
+        "Raised sixth and seventh when ascending",
+        "Natural minor scale when descending"
+      ],
+      "patternDesc" : [-2,-2,-1,-2,-2,-1,-2],
+      "variationOf" : "Melodic Major",
+      "order" : "4",
+      "startEnabled" : true,
+      "groupId" : "1",
+      "description" : "The melodic minor scale's notes alter depending on whether one is playing it ascending from bottom to top, or descending from top to bottom. When ascending, it is the natural minor scale with the sixth and seventh scale degrees raised one half step. When descending, it is identical to the natural minor scale.",
+      "pattern" : [2,1,2,2,2,2,1]
+    },
+    "Lydian" : {
+      "listenFor" : [
+        "Similarity to major scale",
+        "Raised fourth"
+      ],
+      "order" : "4",
+      "startEnabled" : true,
+      "groupId" : "2",
+      "description" : "The Lydian mode is a major scale with the fourth scale degree raised by one half step. This gives the mode a \"brighter\" feel than the major scale.",
+      "pattern" : [2,2,2,1,2,2,1]
+    },
+    "Double Harmonic Minor" : {
+      "listenFor" : [
+        "Minor quality with two augmented seconds"
+      ],
+      "variationOf" : "Double Harmonic Major",
+      "order" : "4",
+      "groupId" : "4",
+      "description" : "The double harmonic minor scale is a natural minor scale with the fourth and seventh scale degrees raised by one half step. This creates an augmented second between the third and fourth scale degrees, as well as between the sixth and seventh scale degrees. It can also be thought of as a harmonic minor scale with the fourth scale degree raised by one half step.",
+      "pattern" : [2,1,3,1,1,3,1]
+    },
+    "Locrian" : {
+      "listenFor" : [
+        "Similarity to Phrygian",
+        "Lowered fifth"
+      ],
+      "variationOf" : "Phrygian",
+      "order" : "7",
+      "startEnabled" : true,
+      "groupId" : "2",
+      "description" : "The Locrian mode is a natural minor scale with the second and fifth scale degrees lowered by one half step. This mode is often the most difficult to identify and sounds the \"darkest\" of the ancient modes.",
+      "pattern" : [1,2,2,1,2,2,2]
+    },
+    "Lydian Augmented" : {
+      "listenFor" : [
+        "Similarity to Lydian",
+        "Augmented fifth"
+      ],
+      "order" : "6",
+      "groupId" : "4",
+      "description" : "The Lydian augmented scale is a major scale with the fourth and fifth scale degrees raised by one half step. The scale gets its name from its similarity to the Lydian mode and the augmented fifth created between the first and fifth scale degrees.",
+      "pattern" : [2,2,2,2,1,2,1]
+    }
+  }
+}
