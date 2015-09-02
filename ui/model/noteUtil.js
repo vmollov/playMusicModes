@@ -82,25 +82,29 @@ var
         return note;
     },
     noteFromInterval = function(startingNote, semitones, steps){
-        if(startingNote.midiValue + semitones < 1 || startingNote.midiValue + semitones > 130)
-            throw Error("Cannot create note from: Invalid range: " + startingNote.fullName + ", semitones: " + semitones + ", steps: " + steps);
+        var startingNoteObj = (typeof startingNote === "string")
+            ? noteFromNameString(startingNote)
+            : startingNote;
+
+        if(startingNoteObj.midiValue + semitones < 1 || startingNoteObj.midiValue + semitones > 130)
+            throw Error("Cannot create note from: Invalid range: " + startingNoteObj.fullName + ", semitones: " + semitones + ", steps: " + steps);
 
         var
-            startingNoteIndex = startingNote.midiValue % 12,
-            targetNoteIndex = (startingNote.midiValue + semitones) % 12,
-            targetNoteBaseSteps = (Number(getBaseValueForNoteName(startingNote.name)) + steps) % 7,
+            startingNoteObjIndex = startingNoteObj.midiValue % 12,
+            targetNoteIndex = (startingNoteObj.midiValue + semitones) % 12,
+            targetNoteBaseSteps = (Number(getBaseValueForNoteName(startingNoteObj.name)) + steps) % 7,
             targetNoteBaseValue = targetNoteBaseSteps < 0
                 ? targetNoteBaseSteps + 7
                 : targetNoteBaseSteps,
             enharmonicsSet = enharmonics[targetNoteIndex],
             enharmonicObject = enharmonicsSet[enharmonics.baseNoteToIntMap[targetNoteBaseValue]],
             targetOctave = enharmonicObject
-                ? Number(startingNote.octave) + Number(enharmonicObject.octaveOffset)
+                ? Number(startingNoteObj.octave) + Number(enharmonicObject.octaveOffset)
                 : undefined,
-            targetNoteNumber = startingNoteIndex + semitones;
+            targetNoteNumber = startingNoteObjIndex + semitones;
 
         if(!enharmonicObject || !targetOctave)
-            throw Error("Cannot create note from " + startingNote.fullName + ", semitones: " + semitones + ", steps: " + steps);
+            throw Error("Cannot create note from " + startingNoteObj.fullName + ", semitones: " + semitones + ", steps: " + steps);
 
         while(targetNoteNumber >= 12){
             targetOctave++;
