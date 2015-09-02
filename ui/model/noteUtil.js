@@ -2,6 +2,40 @@
 
 var
     enharmonics = require('./enharmonicsData.json'),
+    noteObjectPrototype = {
+        buildInterval: function(semitones, steps){
+            if(this.midiValue + semitones < 1 || this.midiValue + semitones > 130)
+                throw Error("Cannot create note from: Invalid range: " + this.fullName + ", semitones: " + semitones + ", steps: " + steps);
+
+            var
+                startingNoteObjIndex = this.midiValue % 12,
+                targetNoteIndex = (this.midiValue + semitones) % 12,
+                targetNoteBaseSteps = (Number(getBaseValueForNoteName(this.name)) + steps) % 7,
+                targetNoteBaseValue = targetNoteBaseSteps < 0
+                    ? targetNoteBaseSteps + 7
+                    : targetNoteBaseSteps,
+                enharmonicsSet = enharmonics[targetNoteIndex],
+                enharmonicObject = enharmonicsSet[enharmonics.baseNoteToIntMap[targetNoteBaseValue]],
+                targetOctave = enharmonicObject
+                    ? Number(this.octave) + Number(enharmonicObject.octaveOffset)
+                    : undefined,
+                targetNoteNumber = startingNoteObjIndex + semitones;
+
+            if(!enharmonicObject || !targetOctave)
+                throw Error("Cannot create note from " + this.fullName + ", semitones: " + semitones + ", steps: " + steps);
+
+            while(targetNoteNumber >= 12){
+                targetOctave++;
+                targetNoteNumber -= 12;
+            }
+            while(targetNoteNumber < 0){
+                targetOctave--;
+                targetNoteNumber += 12;
+            }
+
+            return noteFromNameString(enharmonicObject.note + targetOctave);
+        }
+    },
 
     getBaseValueForNoteName = function(noteName){
         var
@@ -28,7 +62,8 @@ var
         var
             name = noteString.substr(0, 1).toUpperCase(),
             accidental = noteString.substr(1, 1).toLowerCase(),
-            octave, noteValue, midiValue;
+            octave, noteValue, midiValue,
+            noteObject = Object.create(noteObjectPrototype);
 
         if(accidental === "s" || accidental === "f" || accidental === "x" || accidental === "d" || accidental === "n"){
             octave = noteString.substr(2, 1);
@@ -47,14 +82,14 @@ var
 
         midiValue = 12 + (octave * 12) + noteValue;
 
-        return {
-            name: name,
-            accidental: accidental,
-            octave: octave,
-            midiValue: midiValue,
-            fullName: name + (accidental === 'n' ? '' : accidental) + octave,
-            fullNameWithAccidental: name + accidental + octave
-        };
+        noteObject.name = name;
+        noteObject.accidental = accidental;
+        noteObject.octave = octave;
+        noteObject.midiValue = midiValue;
+        noteObject.fullName = name + (accidental === 'n' ? '' : accidental) + octave;
+        noteObject.fullNameWithAccidental = name + accidental + octave;
+
+        return noteObject;
     },
     noteFromNumber = function(number){
         if(number < 1 || number > 132){
@@ -80,48 +115,11 @@ var
         note.centsOff = Math.floor(1200 * Math.log( frequency / frequencyForNoteNumber(number)) / Math.log(2));
 
         return note;
-    },
-    noteFromInterval = function(startingNote, semitones, steps){
-        var startingNoteObj = (typeof startingNote === "string")
-            ? noteFromNameString(startingNote)
-            : startingNote;
-
-        if(startingNoteObj.midiValue + semitones < 1 || startingNoteObj.midiValue + semitones > 130)
-            throw Error("Cannot create note from: Invalid range: " + startingNoteObj.fullName + ", semitones: " + semitones + ", steps: " + steps);
-
-        var
-            startingNoteObjIndex = startingNoteObj.midiValue % 12,
-            targetNoteIndex = (startingNoteObj.midiValue + semitones) % 12,
-            targetNoteBaseSteps = (Number(getBaseValueForNoteName(startingNoteObj.name)) + steps) % 7,
-            targetNoteBaseValue = targetNoteBaseSteps < 0
-                ? targetNoteBaseSteps + 7
-                : targetNoteBaseSteps,
-            enharmonicsSet = enharmonics[targetNoteIndex],
-            enharmonicObject = enharmonicsSet[enharmonics.baseNoteToIntMap[targetNoteBaseValue]],
-            targetOctave = enharmonicObject
-                ? Number(startingNoteObj.octave) + Number(enharmonicObject.octaveOffset)
-                : undefined,
-            targetNoteNumber = startingNoteObjIndex + semitones;
-
-        if(!enharmonicObject || !targetOctave)
-            throw Error("Cannot create note from " + startingNoteObj.fullName + ", semitones: " + semitones + ", steps: " + steps);
-
-        while(targetNoteNumber >= 12){
-            targetOctave++;
-            targetNoteNumber -= 12;
-        }
-        while(targetNoteNumber < 0){
-            targetOctave--;
-            targetNoteNumber += 12;
-        }
-
-        return noteFromNameString(enharmonicObject.note + targetOctave);
     };
 
 module.exports = {
     noteFromFrequency: noteFromFrequency,
     frequencyForNoteNumber: frequencyForNoteNumber,
     noteFromNumber: noteFromNumber,
-    noteFromNameString: noteFromNameString,
-    noteFromInterval: noteFromInterval
+    noteFromNameString: noteFromNameString
 };

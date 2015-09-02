@@ -50,7 +50,7 @@ var
 
                 for(i = 0; i < len; i++){
                     outputScale.push(currentNote);
-                    currentNote = noteUtil.noteFromInterval(currentNote, arrPattern[i], arrStepPattern ? arrStepPattern[i] : stepPatternSubstitute);
+                    currentNote = currentNote.buildInterval(arrPattern[i], arrStepPattern ? arrStepPattern[i] : stepPatternSubstitute);
                 }
                 outputScale.push(currentNote);
 
