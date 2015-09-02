@@ -17,15 +17,13 @@ var
         return null;
     },
     isNoteStringValid = function(noteString){
-        return noteString.match(/^[A-G][sfxdn]?[0-9]$/) !== null;
+        return noteString.match(/^[A-Ga-g][sfxdn]?[0-9]$/) !== null;
     },
     frequencyForNoteNumber = function(noteNumber) {
         return 440 * Math.pow(2, (noteNumber - 69) / 12);
     },
     noteFromNameString = function(noteString){
-        if(!isNoteStringValid(noteString)){
-            throw Error("Invalid note string " + noteString);
-        }
+        if(!isNoteStringValid(noteString)) throw Error("Invalid note string " + noteString);
 
         var
             name = noteString.substr(0, 1).toUpperCase(),
@@ -37,7 +35,7 @@ var
         }
         else{
             octave = noteString.substr(1, 1);
-            accidental = "";
+            accidental = "n";
         }
 
         noteValue = enharmonics.baseNoteValues[name];
@@ -54,7 +52,8 @@ var
             accidental: accidental,
             octave: octave,
             midiValue: midiValue,
-            fullName: name + accidental + octave
+            fullName: name + (accidental === 'n' ? '' : accidental) + octave,
+            fullNameWithAccidental: name + accidental + octave
         };
     },
     noteFromNumber = function(number){
@@ -76,18 +75,15 @@ var
                 : 0,
             note = noteFromNumber(number);
 
-        if(!note){
-            throw Error('Cannot calculate note from frequency' + frequency);
-        }
+        if(!note) throw Error('Cannot calculate note from frequency' + frequency);
 
         note.centsOff = Math.floor(1200 * Math.log( frequency / frequencyForNoteNumber(number)) / Math.log(2));
 
         return note;
     },
     noteFromInterval = function(startingNote, semitones, steps){
-        if(startingNote.midiValue + semitones < 1 || startingNote.midiValue + semitones > 130){
-            throw Error("Cannot create note from " + startingNote.fullName + ", semitones: " + semitones + ", steps: " + steps);
-        }
+        if(startingNote.midiValue + semitones < 1 || startingNote.midiValue + semitones > 130)
+            throw Error("Cannot create note from: Invalid range: " + startingNote.fullName + ", semitones: " + semitones + ", steps: " + steps);
 
         var
             startingNoteIndex = startingNote.midiValue % 12,
@@ -103,9 +99,8 @@ var
                 : undefined,
             targetNoteNumber = startingNoteIndex + semitones;
 
-        if(!enharmonicObject || !targetOctave){
+        if(!enharmonicObject || !targetOctave)
             throw Error("Cannot create note from " + startingNote.fullName + ", semitones: " + semitones + ", steps: " + steps);
-        }
 
         while(targetNoteNumber >= 12){
             targetOctave++;

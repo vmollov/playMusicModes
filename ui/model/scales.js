@@ -4,30 +4,45 @@ var
     musicModesData = require('./MusicModesData.json'),
     noteUtil = require('./noteUtil'),
 
-    createScale = function(modeName, startingNote){
-        if(!musicModesData.ModeDefinitions[modeName]){
-            console.error('Mode not found: ', modeName);
-            return;
-        }
+    createScale = function(modeName, startingNoteStr){
+        if(!musicModesData.ModeDefinitions[modeName]) throw Error("Mode not found: " + modeName);
 
         var
             mode = musicModesData.ModeDefinitions[modeName],
-            currentNote = noteUtil.noteFromNameString(startingNote),
+            startingNoteObj = noteUtil.noteFromNameString(startingNoteStr),
             pattern = mode.pattern || musicModesData.ModeDefinitions[mode.patternOf].pattern,
-            patternDesc = mode.patternDesc, // || pattern.reverse().map(function(val){ return -val; }),
+            patternDesc = mode.patternDesc || JSON.parse(JSON.stringify(pattern)).reverse().map(function(val){ return -val; }),
             stepPattern = mode.stepPattern || null,
             stepPatternDesc = mode.stepPatternDesc || null,
-            patternLen = pattern.length, i, scaleAsc = [], scaleDesc = [];
+            scaleAsc,
+            scaleDesc,
 
-        //compose the ascending version
-        for(i = 0; i < patternLen; i++){
-            scaleAsc.push(currentNote);
-            currentNote = noteUtil.noteFromInterval(currentNote, pattern[i], stepPattern ? stepPattern[i] : 1);
-        }
-        scaleAsc.push(currentNote);
+            buildScale = function(startingNote, arrPattern, arrStepPattern, stepPatternSubstitute){
+                var
+                    outputScale = [],
+                    currentNote = startingNote,
+                    i,
+                    len = arrPattern.length;
 
+                for(i = 0; i < len; i++){
+                    outputScale.push(currentNote);
+                    currentNote = noteUtil.noteFromInterval(currentNote, arrPattern[i], arrStepPattern ? arrStepPattern[i] : stepPatternSubstitute);
+                }
+                outputScale.push(currentNote);
 
-        return scaleAsc;
+                return outputScale;
+            };
+
+        scaleAsc = buildScale(startingNoteObj, pattern, stepPattern, 1);
+        scaleDesc = buildScale(scaleAsc[scaleAsc.length - 1], patternDesc, stepPatternDesc, -1);
+
+        return {
+            ascending: scaleAsc,
+            descending: scaleDesc
+        };
     };
 
+//todo: remove
 window.createScale = createScale;
+window.noteFromInterval = noteUtil.noteFromInterval;
+window.noteFromNameString = noteUtil.noteFromNameString;
