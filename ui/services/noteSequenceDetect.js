@@ -9,29 +9,37 @@ module.exports = function(app){
             var
                 pitchDetector = require('../model/pitchDetector'),
                 noteUtil = require('../model/noteUtil'),
-                analyser,
+                audioAnalyser,
                 detectedPitches = [],
                 detectedPitch,
                 timeoutId,
+                scales = require('../model/scales'),
+                playedScaleAnalyser = require('../model/scaleAnalyser'),
+                scaleAnalyser = playedScaleAnalyser.getAnalyserForScale(scales.createScale('Major', 'C4')),
 
                 updatePitch = function(){
-                    var estimate = pitchDetector.detect(analyser);
+                    var
+                        estimate = pitchDetector.detect(audioAnalyser),
+                        isNoteContinuing = false;
 
                     if(estimate.foundPitch &&  estimate.freq < 16000){
                         detectedPitch = noteUtil.noteFromFrequency(estimate.freq);
 
-                        if(!detectedPitches.length || detectedPitch.number !== detectedPitches[detectedPitches.length - 1].number){
+                        if (!detectedPitches.length
+                            || (detectedPitch.midiValue !== detectedPitches[detectedPitches.length - 1].midiValue && !isNoteContinuing)) {
+
                             //new pitch detected - add it to the collection
-                            detectedPitches.push({
-                                number: detectedPitch.number,
-                                letter: detectedPitch.letter,
-                                octave: detectedPitch.octave,
-                                centsOffTimeProgression: []
-                            });
+                            detectedPitch.centsOffTimeProgression = [];
+                            detectedPitches.push(detectedPitch);
+                            isNoteContinuing = true;
+                            scaleAnalyser.addPlayedNote(detectedPitch);
                         }
 
                         //add the newly detected centsOff to the pitch
                         detectedPitches[detectedPitches.length - 1].centsOffTimeProgression.push(detectedPitch.centsOff);
+                    }
+                    else{
+                        isNoteContinuing = false;
                     }
 
                     timeoutId = $timeout(updatePitch);
@@ -41,7 +49,7 @@ module.exports = function(app){
                 startPitchDetection: function(){
                     audioInput.getAnalyser().then(
                         function(objAnalyser){
-                            analyser = objAnalyser;
+                            audioAnalyser = objAnalyser;
                             updatePitch();
                         }
                     );

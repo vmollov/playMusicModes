@@ -59,6 +59,7 @@ var
 
         scaleAsc = buildScale(startingNoteObj, pattern, stepPattern, 1);
         scaleDesc = buildScale(scaleAsc[scaleAsc.length - 1], patternDesc, stepPatternDesc, -1);
+
         outputScale = Object.create(scalePrototype);
         outputScale.ascending = scaleAsc;
         outputScale.descending = scaleDesc;

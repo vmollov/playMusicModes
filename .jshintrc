@@ -2,6 +2,8 @@
   "globalstrict": true,
   "laxbreak": true,
   "globals": {
+    "Float32Array": false,
+    "setTimeout": false,
     "angular": false,
     "require": false,
     "describe": false,
@@ -12,6 +14,8 @@
     "module": false,
     "inject": false,
     "console": false,
-    "navigator": true
+    "navigator": true,
+    "process": false,
+    "__dirname": false
   }
 }

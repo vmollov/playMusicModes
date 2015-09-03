@@ -5,12 +5,12 @@ var
     noteObjectPrototype = {
         buildInterval: function(semitones, steps){
             if(this.midiValue + semitones < 1 || this.midiValue + semitones > 130)
-                throw Error("Cannot create note from: Invalid range: " + this.fullName + ", semitones: " + semitones + ", steps: " + steps);
+                throw Error("Cannot create note from: Invalid range: " + this.name + ", semitones: " + semitones + ", steps: " + steps);
 
             var
                 startingNoteObjIndex = this.midiValue % 12,
                 targetNoteIndex = (this.midiValue + semitones) % 12,
-                targetNoteBaseSteps = (Number(getBaseValueForNoteName(this.name)) + steps) % 7,
+                targetNoteBaseSteps = (Number(getBaseValueForNoteName(this.letter)) + steps) % 7,
                 targetNoteBaseValue = targetNoteBaseSteps < 0
                     ? targetNoteBaseSteps + 7
                     : targetNoteBaseSteps,
@@ -22,7 +22,7 @@ var
                 targetNoteNumber = startingNoteObjIndex + semitones;
 
             if(!enharmonicObject || !targetOctave)
-                throw Error("Cannot create note from " + this.fullName + ", semitones: " + semitones + ", steps: " + steps);
+                throw Error("Cannot create note from " + this.name + ", semitones: " + semitones + ", steps: " + steps);
 
             while(targetNoteNumber >= 12){
                 targetOctave++;
@@ -60,7 +60,7 @@ var
         if(!isNoteStringValid(noteString)) throw Error("Invalid note string " + noteString);
 
         var
-            name = noteString.substr(0, 1).toUpperCase(),
+            letter = noteString.substr(0, 1).toUpperCase(),
             accidental = noteString.substr(1, 1).toLowerCase(),
             octave, noteValue, midiValue,
             noteObject = Object.create(noteObjectPrototype);
@@ -73,7 +73,7 @@ var
             accidental = "n";
         }
 
-        noteValue = enharmonics.baseNoteValues[name];
+        noteValue = enharmonics.baseNoteValues[letter];
 
         if(accidental === 's') noteValue++;
         if(accidental === 'x') noteValue = noteValue + 2;
@@ -82,12 +82,12 @@ var
 
         midiValue = 12 + (octave * 12) + noteValue;
 
-        noteObject.name = name;
+        noteObject.letter = letter;
         noteObject.accidental = accidental;
         noteObject.octave = octave;
         noteObject.midiValue = midiValue;
-        noteObject.fullName = name + (accidental === 'n' ? '' : accidental) + octave;
-        noteObject.fullNameWithAccidental = name + accidental + octave;
+        noteObject.name = letter + (accidental === 'n' ? '' : accidental) + octave;
+        noteObject.nameWithAccidental = letter + accidental + octave;
 
         return noteObject;
     },

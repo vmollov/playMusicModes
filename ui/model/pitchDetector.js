@@ -3,11 +3,13 @@
 var
     FFT = require('./pitchfinder.js/fft'),
     PitchFinder = require('./pitchfinder.js/pitchfinder.js')(FFT),
-    YINDetector = PitchFinder.YIN({threshold: 0.10});
+    yinDetector = PitchFinder.YIN({threshold: 0.10}),
+
+    timeoutId;
 
 module.exports = {
     configureDetector: function(conf){
-        YINDetector = PitchFinder.YIN(conf);
+        yinDetector = PitchFinder.YIN(conf);
     },
     detect: function(analyser){
         var
@@ -15,8 +17,12 @@ module.exports = {
             estimate;
 
         analyser.getFloatTimeDomainData(buf);
-        estimate = YINDetector(buf);
+        estimate = yinDetector(buf);
 
         return estimate;
+    },
+    startListening: function(analyser, pitchDetectedHandler){
+
+
     }
 };

@@ -4,7 +4,7 @@
 
 <button id="startListening" data-ng-click="start()">Listen</button>
 <button id="stopListening" data-ng-click="stop()">Stop</button>
-<p data-ng-repeat="note in detectedPitches">
+<p data-ng-repeat="note in detectedPitches">{{note}}
     {{note.letter}}{{note.octave}}:
     <span data-ng-repeat="centsOff in note.centsOffTimeProgression track by $index">{{centsOff}},</span>
 </p>

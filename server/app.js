@@ -9,6 +9,7 @@ var
     port = process.env.PORT || 9000;
 
 app.use(express.static(path.resolve(__dirname, '../public')));
+app.use('/resources', express.static(path.resolve(__dirname, '../resources')));
 
 app.listen(port, function(){
     logger.log('info', "Application started on port %s", port);
