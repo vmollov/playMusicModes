@@ -3,6 +3,23 @@
 var
     analyserPrototype = {
         addPlayedNote: function(note){
+            var
+                i,
+                len = this.scale.ascending.length;
+
+            if(this.matchIndexAsc === undefined){
+                this.matchIndexAsc = -1;
+            }
+
+            for(i = this.matchIndexAsc + 1; i < len; i++){
+                if(note.midiValue === this.scale.ascending[i].midiValue){
+                    //match found
+                    this.scale.ascending[i].playedMatch = note;
+                    this.matchIndexAsc = i;
+                    break;
+                }
+            }
+
             this.played.notes.push(note);
 
             return note;
@@ -15,8 +32,7 @@ module.exports = {
 
         analyser.scale = scale;
         analyser.played = {
-            notes: [],
-            startingOctave: 0
+            notes: []
         };
 
         return analyser;

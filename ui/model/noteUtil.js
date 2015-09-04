@@ -2,7 +2,14 @@
 
 var
     enharmonics = require('./enharmonicsData.json'),
+
     noteObjectPrototype = {
+        get name(){
+            return this.letter + (this.accidental === 'n' ? '' : this.accidental) + this.octave;
+        },
+        get nameWithAccidental(){
+            return this.letter + this.accidental + this.octave;
+        },
         buildInterval: function(semitones, steps){
             if(this.midiValue + semitones < 1 || this.midiValue + semitones > 130)
                 throw Error("Cannot create note from: Invalid range: " + this.name + ", semitones: " + semitones + ", steps: " + steps);
@@ -34,6 +41,23 @@ var
             }
 
             return noteFromNameString(enharmonicObject.note + targetOctave);
+        },
+        changeToEnharmonic: function(noteLetter){
+            var
+                thisBaseValue = this.midiValue % 12,
+                thisEnharmonicSet = enharmonics[thisBaseValue];
+
+            if(!thisEnharmonicSet[noteLetter]){
+                throw Error('No enharmonic of ' + noteLetter + ' exists for ' + this.name);
+            }
+
+            this.letter = noteLetter;
+            this.accidental = thisEnharmonicSet[noteLetter].note.length === 2
+                ? thisEnharmonicSet[noteLetter].note.substr(1, 1)
+                : 'n';
+            this.octave = Number(this.octave) + thisEnharmonicSet[noteLetter].octaveOffset;
+
+            return this;
         }
     },
 
@@ -86,8 +110,6 @@ var
         noteObject.accidental = accidental;
         noteObject.octave = octave;
         noteObject.midiValue = midiValue;
-        noteObject.name = letter + (accidental === 'n' ? '' : accidental) + octave;
-        noteObject.nameWithAccidental = letter + accidental + octave;
 
         return noteObject;
     },

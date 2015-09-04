@@ -22,7 +22,7 @@ module.exports = {
         return estimate;
     },
     startListening: function(analyser, pitchDetectedHandler){
-
+        //todo: implement - copy from noteSequenceDetect service
 
     }
 };
