@@ -4,11 +4,10 @@ module.exports = function(app){
 
     require('./audioInput')(app);
 
-    app.factory('noteSequenceDetect', ['audioInput', '$timeout', //todo: find a better way!
+    app.factory('noteSequenceDetect', ['audioInput', '$timeout',
         function(audioInput, $timeout){
             var
                 noteSequenceDetector = require('../model/noteSequenceDetector'),
-                detectedPitches = [],
                 scales = require('../model/scales'),
                 CMajorScale = scales.createScale('Major', 'C4'),
                 playedScaleAnalyser = require('../model/scaleAnalyser'),
