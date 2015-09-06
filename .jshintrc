@@ -4,6 +4,7 @@
   "globals": {
     "Float32Array": false,
     "setTimeout": false,
+    "clearTimeout": false,
     "angular": false,
     "require": false,
     "describe": false,

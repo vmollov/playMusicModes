@@ -1,10 +1,11 @@
-<div id="output">
-    Here will be the detected output:<br>
-</div>
-
 <button id="startListening" data-ng-click="start()">Listen</button>
 <button id="stopListening" data-ng-click="stop()">Stop</button>
-<p data-ng-repeat="note in detectedPitches">{{note}}
+
+<h1>Testing pitch detection</h1>
+<p data-ng-repeat="note in detectedPitches">
     {{note.letter}}{{note.octave}}:
     <span data-ng-repeat="centsOff in note.centsOffTimeProgression track by $index">{{centsOff}},</span>
 </p>
+
+<h1>Analysis of C Major</h1>
+<div>{{CMajorScale}}</div>

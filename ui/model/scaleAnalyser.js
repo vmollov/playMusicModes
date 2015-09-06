@@ -12,9 +12,12 @@ var
             }
 
             for(i = this.matchIndexAsc + 1; i < len; i++){
-                if(note.midiValue === this.scale.ascending[i].midiValue){
+                if(note.nameBase === this.scale.ascending[i].nameBase){
                     //match found
-                    this.scale.ascending[i].playedMatch = note;
+
+                    console.log('match found', note.name); //todo: remove
+
+                    this.scale.ascending[i].playedMatch = note; //todo: this does not trigger digest - make it into ng service
                     this.matchIndexAsc = i;
                     break;
                 }

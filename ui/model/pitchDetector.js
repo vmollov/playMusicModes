@@ -3,9 +3,7 @@
 var
     FFT = require('./pitchfinder.js/fft'),
     PitchFinder = require('./pitchfinder.js/pitchfinder.js')(FFT),
-    yinDetector = PitchFinder.YIN({threshold: 0.10}),
-
-    timeoutId;
+    yinDetector = PitchFinder.YIN({threshold: 0.10});
 
 module.exports = {
     configureDetector: function(conf){
@@ -20,9 +18,5 @@ module.exports = {
         estimate = yinDetector(buf);
 
         return estimate;
-    },
-    startListening: function(analyser, pitchDetectedHandler){
-        //todo: implement - copy from noteSequenceDetect service
-
     }
 };

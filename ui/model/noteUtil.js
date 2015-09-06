@@ -10,6 +10,9 @@ var
         get nameWithAccidental(){
             return this.letter + this.accidental + this.octave;
         },
+        get nameBase(){
+            return this.letter + (this.accidental === 'n' ? '' : this.accidental);
+        },
         buildInterval: function(semitones, steps){
             if(this.midiValue + semitones < 1 || this.midiValue + semitones > 130)
                 throw Error("Cannot create note from: Invalid range: " + this.name + ", semitones: " + semitones + ", steps: " + steps);
@@ -47,9 +50,7 @@ var
                 thisBaseValue = this.midiValue % 12,
                 thisEnharmonicSet = enharmonics[thisBaseValue];
 
-            if(!thisEnharmonicSet[noteLetter]){
-                throw Error('No enharmonic of ' + noteLetter + ' exists for ' + this.name);
-            }
+            if(!thisEnharmonicSet[noteLetter]) throw Error('No enharmonic of ' + noteLetter + ' exists for ' + this.name);
 
             this.letter = noteLetter;
             this.accidental = thisEnharmonicSet[noteLetter].note.length === 2
@@ -114,9 +115,7 @@ var
         return noteObject;
     },
     noteFromNumber = function(number){
-        if(number < 1 || number > 132){
-            throw Error('Cannot calculate note from number' + number);
-        }
+        if(number < 1 || number > 132) throw Error('Cannot calculate note from number' + number);
 
         var
             noteNumber = number % 12,

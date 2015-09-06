@@ -4,65 +4,36 @@ module.exports = function(app){
 
     require('./audioInput')(app);
 
-    app.factory('noteSequenceDetect', ['audioInput', '$timeout',
+    app.factory('noteSequenceDetect', ['audioInput', '$timeout', //todo: find a better way!
         function(audioInput, $timeout){
             var
-                pitchDetector = require('../model/pitchDetector'),
-                noteUtil = require('../model/noteUtil'),
-                audioAnalyser,
+                noteSequenceDetector = require('../model/noteSequenceDetector'),
                 detectedPitches = [],
-                detectedPitch,
-                timeoutId,
                 scales = require('../model/scales'),
+                CMajorScale = scales.createScale('Major', 'C4'),
                 playedScaleAnalyser = require('../model/scaleAnalyser'),
-                scaleAnalyser = playedScaleAnalyser.getAnalyserForScale(scales.createScale('Major', 'C4')),
+                scaleAnalyser = playedScaleAnalyser.getAnalyserForScale(CMajorScale),
 
-                updatePitch = function(){
-                    var
-                        estimate = pitchDetector.detect(audioAnalyser),
-                        isNoteContinuing = false;
-
-                    if(estimate.foundPitch &&  estimate.freq < 16000){
-                        detectedPitch = noteUtil.noteFromFrequency(estimate.freq);
-
-                        if (!detectedPitches.length
-                            || (detectedPitch.midiValue !== detectedPitches[detectedPitches.length - 1].midiValue && !isNoteContinuing)) {
-
-                            //new pitch detected - add it to the collection
-                            detectedPitch.centsOffTimeProgression = [];
-                            detectedPitches.push(detectedPitch);
-                            isNoteContinuing = true;
-                            scaleAnalyser.addPlayedNote(detectedPitch);
-                        }
-
-                        //add the newly detected centsOff to the pitch
-                        detectedPitches[detectedPitches.length - 1].centsOffTimeProgression.push(detectedPitch.centsOff);
-                    }
-                    else{
-                        isNoteContinuing = false;
-                    }
-
-                    timeoutId = $timeout(updatePitch);
+                noteDetected = function(note){
+                    scaleAnalyser.addPlayedNote(note);
                 };
 
             return {
                 startPitchDetection: function(){
                     audioInput.getAnalyser().then(
                         function(objAnalyser){
-                            audioAnalyser = objAnalyser;
-                            updatePitch();
+                            noteSequenceDetector.startListening(objAnalyser, noteDetected, $timeout);
                         }
                     );
                 },
                 stopPitchDetection: function(){
-                    if(timeoutId) {
-                        $timeout.cancel(timeoutId);
-                        timeoutId = undefined;
-                        console.log(detectedPitches);
-                    }
+                    return noteSequenceDetector.stopListening();
                 },
                 getDetectedPitches: function(){
-                    return detectedPitches;
+                    return noteSequenceDetector.getCurrentDetectedPitches();
+                },
+                getCMajorScale: function(){
+                    return CMajorScale;
                 }
             };
         }
