@@ -1,3 +1,9 @@
 body #output {
   font-size: 24px;
 }
+body .tester {
+  display: inline-block;
+  width: 49%;
+  border: thin solid black;
+  float: left;
+}

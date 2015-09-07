@@ -16,7 +16,7 @@ var
             estimate = pitchDetector.detect(audioAnalyser),
             detectedNote;
 
-        if(!estimate.foundPitch ||  estimate.freq > 16000){
+        if(!estimate.foundPitch ||  estimate.freq > 15000){
             if(isNoteInProgress && onNoteDetectFn){ //note was in progress but now it's done, so use the onNoteDetectFn and pass it in
                 onNoteDetectFn(detectedPitches[detectedPitches.length - 1]);
             }
@@ -64,7 +64,6 @@ module.exports = {
     stopListening: function(){
         if(timeoutId) {
             clearTimeoutFn(timeoutId);
-            console.log('cleared timeout');
         }
         return detectedPitches;
     },

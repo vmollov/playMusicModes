@@ -30,7 +30,6 @@ module.exports = function(app){
                         return noteSequenceDetect.getCMajorScale();
                     },
                     function(newValue){
-                        console.log('watch called');
                         $scope.CMajorScale = newValue;
                     }
                 );

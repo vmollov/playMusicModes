@@ -27,8 +27,6 @@ module.exports = function(app){
                     },
                     function(err){
                         console.error("Couldn't get an audio stream", err);
-
-                        //todo: implement logic to allow subsequent requests for mike use
                         streamDeferred.reject(err);
                     });
 

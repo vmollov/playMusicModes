@@ -1,11 +1,24 @@
-<button id="startListening" data-ng-click="start()">Listen</button>
-<button id="stopListening" data-ng-click="stop()">Stop</button>
+<div>
+    <button id="startListening" data-ng-click="start()">Listen</button>
+    <button id="stopListening" data-ng-click="stop()">Stop</button>
+</div>
+<div class="tester">
+    <h1>Testing pitch detection</h1>
+    <p data-ng-repeat="note in detectedPitches">
+        {{note.letter}}{{note.octave}}:
+        <span data-ng-repeat="centsOff in note.centsOffTimeProgression track by $index">{{centsOff}},</span>
+    </p>
+</div>
 
-<h1>Testing pitch detection</h1>
-<p data-ng-repeat="note in detectedPitches">
-    {{note.letter}}{{note.octave}}:
-    <span data-ng-repeat="centsOff in note.centsOffTimeProgression track by $index">{{centsOff}},</span>
-</p>
+<div class="tester">
+    <h1>Analysis of C Major</h1>
+    <div>
+        <table>
+            <tr data-ng-repeat="note in CMajorScale.ascending">
+                <td>{{note.name}}</td>
+                <td><span data-ng-if="note.playedMatch">Matched: {{note.playedMatch.name}}</span></td>
+            </tr>
+        </table>
 
-<h1>Analysis of C Major</h1>
-<div>{{CMajorScale}}</div>
+    </div>
+</div>

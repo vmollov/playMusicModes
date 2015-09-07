@@ -14,10 +14,7 @@ var
             for(i = this.matchIndexAsc + 1; i < len; i++){
                 if(note.nameBase === this.scale.ascending[i].nameBase){
                     //match found
-
-                    console.log('match found', note.name); //todo: remove
-
-                    this.scale.ascending[i].playedMatch = note; //todo: this does not trigger digest - make it into ng service
+                    this.scale.ascending[i].playedMatch = note;
                     this.matchIndexAsc = i;
                     break;
                 }
