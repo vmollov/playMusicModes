@@ -8,8 +8,6 @@ var
     timeoutId,
     onNoteDetectFn,
     isNoteInProgress = false,
-    timeoutFn,
-    clearTimeoutFn,
 
     updatePitch = function(){
         var
@@ -37,16 +35,14 @@ var
             detectedPitches[detectedPitches.length - 1].centsOffTimeProgression.push(detectedNote.centsOff);
         }
 
-        timeoutId = timeoutFn(updatePitch);
+        timeoutId = setTimeout(updatePitch);
     },
     reset = function(){
         detectedPitches = [];
         timeoutId = undefined;
         onNoteDetectFn = undefined;
-    };
-
-module.exports = {
-    startListening: function(analyser, onNoteDetect, customTimeoutFn){
+    },
+    startListening = function(analyser, onNoteDetect){
         if(!analyser) throw Error('AudioAnalyser is required');
 
         reset();
@@ -54,28 +50,29 @@ module.exports = {
         audioAnalyser = analyser;
         onNoteDetectFn = onNoteDetect;
 
-        //for compatibility with some frameworks like AngularJS - so we can take advantage of real time updating, etc.
-        timeoutFn = customTimeoutFn || setTimeout;
-        clearTimeoutFn = customTimeoutFn.cancel || clearTimeout;
-        if(customTimeoutFn && !customTimeoutFn.cancel) throw Error('If you pass a customTimeoutFn it needs to have a cancel() method defined');
-
         updatePitch();
     },
-    stopListening: function(){
+    stopListening = function(){
         if(timeoutId) {
-            clearTimeoutFn(timeoutId);
+            clearTimeout(timeoutId);
         }
         return detectedPitches;
     },
-    getCurrentDetectedPitches: function(){
+    getCurrentDetectedPitches = function(){
         return detectedPitches;
     },
-    discardNotesExceptLastN: function(number){
+    discardNotesExceptLastN = function(number){
         var i = detectedPitches.length - number;
         if(i !== i) throw Error('Number needs to be numeric');
 
         while(i-- > 0){
             detectedPitches.shift();
         }
-    }
+    };
+
+module.exports = {
+    startListening: startListening,
+    stopListening: stopListening,
+    getCurrentDetectedPitches: getCurrentDetectedPitches,
+    discardNotesExceptLastN: discardNotesExceptLastN
 };

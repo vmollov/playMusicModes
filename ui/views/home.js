@@ -10,7 +10,7 @@ module.exports = function(app){
             var pitchDetectionWatch, scaleAnalyserWatch;
 
             $scope.start = function(){
-                noteSequenceDetect.startPitchDetection();
+                noteSequenceDetect.startScaleDetection($scope);
 
                 if(pitchDetectionWatch) return;
 
@@ -36,7 +36,7 @@ module.exports = function(app){
 
             };
             $scope.stop = function(){
-                noteSequenceDetect.stopPitchDetection();
+                noteSequenceDetect.stopScaleDetection();
                 if(pitchDetectionWatch) {
                     pitchDetectionWatch();
                     pitchDetectionWatch = undefined;

@@ -3,20 +3,23 @@
 var
     FFT = require('./pitchfinder.js/fft'),
     PitchFinder = require('./pitchfinder.js/pitchfinder.js')(FFT),
-    yinDetector = PitchFinder.YIN({threshold: 0.10});
+    yinDetector = PitchFinder.YIN({threshold: 0.10}),
 
-module.exports = {
-    configureDetector: function(conf){
+    configureDetector = function(conf){
         yinDetector = PitchFinder.YIN(conf);
     },
-    detect: function(analyser){
+    detect = function(audioAnalyser){
         var
             buf = new Float32Array(2048),
             estimate;
 
-        analyser.getFloatTimeDomainData(buf);
+        audioAnalyser.getFloatTimeDomainData(buf);
         estimate = yinDetector(buf);
 
         return estimate;
-    }
+    };
+
+module.exports = {
+    configureDetector: configureDetector,
+    detect: detect
 };

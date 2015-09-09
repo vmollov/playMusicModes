@@ -1,5 +1,5 @@
 'use strict';
-
+//todo: implement transposition
 var
     enharmonics = require('./enharmonicsData.json'),
 

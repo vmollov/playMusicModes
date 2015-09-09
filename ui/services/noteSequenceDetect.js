@@ -4,28 +4,34 @@ module.exports = function(app){
 
     require('./audioInput')(app);
 
-    app.factory('noteSequenceDetect', ['audioInput', '$timeout',
-        function(audioInput, $timeout){
+    app.factory('noteSequenceDetect', ['audioInput',
+        function(audioInput){
             var
                 noteSequenceDetector = require('../model/noteSequenceDetector'),
                 scales = require('../model/scales'),
                 CMajorScale = scales.createScale('Major', 'C4'),
                 playedScaleAnalyser = require('../model/scaleAnalyser'),
                 scaleAnalyser = playedScaleAnalyser.getAnalyserForScale(CMajorScale),
+                callerScope,
 
                 noteDetected = function(note){
                     scaleAnalyser.addPlayedNote(note);
+                    if(callerScope){
+                        callerScope.$digest();
+                    }
                 };
 
             return {
-                startPitchDetection: function(){
+                startScaleDetection: function(scopeObj){ //caller scope
+                    callerScope = scopeObj;
+
                     audioInput.getAnalyser().then(
                         function(objAnalyser){
-                            noteSequenceDetector.startListening(objAnalyser, noteDetected, $timeout);
+                            noteSequenceDetector.startListening(objAnalyser, noteDetected);
                         }
                     );
                 },
-                stopPitchDetection: function(){
+                stopScaleDetection: function(){
                     return noteSequenceDetector.stopListening();
                 },
                 getDetectedPitches: function(){
