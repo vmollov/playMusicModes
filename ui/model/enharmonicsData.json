@@ -67,7 +67,7 @@
       "note": "Ef",
       "octaveOffset": 0
     },
-    "default": "Ds"
+    "default": "Ef"
   },
   "4": {
     "D": {
@@ -82,7 +82,7 @@
       "note": "Ff",
       "octaveOffset": 0
     },
-    "default": "Es"
+    "default": "E"
   },
   "5": {
     "E": {
@@ -134,7 +134,7 @@
       "note": "Af",
       "octaveOffset": 0
     },
-    "default": "Gs"
+    "default": "Af"
   },
   "9": {
     "G": {
@@ -160,7 +160,7 @@
       "note": "Bf",
       "octaveOffset": 0
     },
-    "default": "As"
+    "default": "Bf"
   },
   "11": {
     "A": {
