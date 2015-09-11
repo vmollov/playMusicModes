@@ -11,7 +11,11 @@ module.exports = function(app){
                 scales = require('../model/scales'),
                 CMajorScale = scales.createScale('Major', 'C4'),
                 playedScaleAnalyser = require('../model/scaleAnalyser'),
-                scaleAnalyser = playedScaleAnalyser.getAnalyserForScale(CMajorScale),
+                scaleAnalyser = playedScaleAnalyser.getAnalyserForScale(CMajorScale,
+                    function(){
+                        console.log('done analyzing scale');
+                    }
+                ),
                 callerScope,
 
                 noteDetected = function(note){

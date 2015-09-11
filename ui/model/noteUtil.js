@@ -27,7 +27,7 @@ var
                 enharmonicsSet = enharmonics[targetNoteIndex],
                 enharmonicObject = enharmonicsSet[enharmonics.baseNoteToIntMap[targetNoteBaseValue]],
                 targetOctave = enharmonicObject
-                    ? Number(this.octave) + Number(enharmonicObject.octaveOffset)
+                    ? this.octave + Number(enharmonicObject.octaveOffset)
                     : undefined,
                 targetNoteNumber = startingNoteObjIndex + semitones;
 
@@ -56,7 +56,7 @@ var
             this.accidental = thisEnharmonicSet[noteLetter].note.length === 2
                 ? thisEnharmonicSet[noteLetter].note.substr(1, 1)
                 : 'n';
-            this.octave = Number(this.octave) + thisEnharmonicSet[noteLetter].octaveOffset;
+            this.octave = this.octave + thisEnharmonicSet[noteLetter].octaveOffset;
 
             return this;
         }
@@ -109,7 +109,7 @@ var
 
         noteObject.letter = letter;
         noteObject.accidental = accidental;
-        noteObject.octave = octave;
+        noteObject.octave = Number(octave);
         noteObject.midiValue = midiValue;
 
         return noteObject;

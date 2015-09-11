@@ -10,18 +10,17 @@ var
                 len = octaves || 1,
                 i,
                 nextOctaveStartingNote,
-                scaleInNextOctave,
-                outputScale = JSON.parse(JSON.stringify(this));
+                scaleInNextOctave;
 
             for(i = 0; i < len; i++){
-                nextOctaveStartingNote = outputScale.ascending.pop();
-                scaleInNextOctave = createScale(outputScale.modeName, nextOctaveStartingNote);
-                outputScale.ascending = outputScale.ascending.concat(scaleInNextOctave.ascending);
+                nextOctaveStartingNote = this.ascending.pop();
+                scaleInNextOctave = createScale(this.modeName, nextOctaveStartingNote);
+                this.ascending = this.ascending.concat(scaleInNextOctave.ascending);
                 scaleInNextOctave.descending.pop(); //remove the last note since it is already present
-                outputScale.descending = scaleInNextOctave.descending.concat(outputScale.descending);
+                this.descending = scaleInNextOctave.descending.concat(this.descending);
             }
 
-            return outputScale;
+            return this;
         }
     },
 
@@ -34,7 +33,7 @@ var
                 ? noteUtil.noteFromNameString(startingNote)
                 : startingNote,
             pattern = mode.pattern || musicModesData.ModeDefinitions[mode.patternOf].pattern,
-            patternDesc = mode.patternDesc || JSON.parse(JSON.stringify(pattern)).reverse().map(function(val){ return -val; }),
+            patternDesc = mode.patternDesc || pattern.slice().reverse().map(function(val){ return -val; }),
             stepPattern = mode.stepPattern || null,
             stepPatternDesc = mode.stepPatternDesc || null,
             scaleAsc,

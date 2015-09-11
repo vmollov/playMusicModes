@@ -4,10 +4,10 @@
 </div>
 <div class="tester">
     <h1>Testing pitch detection</h1>
-    <p data-ng-repeat="note in detectedPitches">
-        {{note.letter}}{{note.octave}}:
-        <span data-ng-repeat="centsOff in note.centsOffTimeProgression track by $index">{{centsOff}},</span>
-    </p>
+    <span data-ng-repeat="note in detectedPitches">
+        {{note.name}}
+        <!--<span data-ng-repeat="centsOff in note.centsOffTimeProgression track by $index">{{centsOff}},</span>-->
+    </span>
 </div>
 
 <div class="tester">
@@ -15,6 +15,10 @@
     <div>
         <table>
             <tr data-ng-repeat="note in CMajorScale.ascending">
+                <td>{{note.name}}</td>
+                <td><span data-ng-if="note.playedMatch">Matched: {{note.playedMatch.name}}</span></td>
+            </tr>
+            <tr data-ng-repeat="note in CMajorScale.descending">
                 <td>{{note.name}}</td>
                 <td><span data-ng-if="note.playedMatch">Matched: {{note.playedMatch.name}}</span></td>
             </tr>

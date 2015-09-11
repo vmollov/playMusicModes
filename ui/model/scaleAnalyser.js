@@ -16,7 +16,7 @@ var
             var
                 previousPlayedNote = this.played.notes.length
                     ? this.played.notes[this.played.notes.length - 1]
-                    : undefined,
+                    : null,
 
                 checkMatch = function(arrNotes, scaleDirection){
                     var
@@ -54,7 +54,7 @@ var
             }
 
             //check ascending
-            if(checkMatch(this.scale.ascending, "ascending")){
+            if(checkMatch(this.scale.ascending, "ascending")){//todo: improve this condition checking
                 return;
             }
             //check descending
