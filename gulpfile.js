@@ -16,18 +16,6 @@ var
     //processHtml = require('gulp-processhtml'),
     server = require('gulp-express'),
     //uglify = require('gulp-uglify'),
-    backEndUnitTestsGlob = [
-        'server/**/*.spec.js'
-    ],
-    frontEndUnitTestGlob = [
-        'node_modules/angular/angular.js',
-        'node_modules/angular-mocks/angular-mocks.js',
-        'node_modules/angular-route/angular-route.js',
-        'node_modules/angular-animate/angular-animate.js',
-        'ui/*.js',
-        'ui/**/*.js',
-        'ui/directives/*.html'
-    ],
     serverInitFile = 'server/app.js',
     errorHandler = function (err) {
         console.error(err);
@@ -77,20 +65,6 @@ gulp.task('compileJs', function(){
         .pipe(gulp.dest('public/'));
 });
 
-//unit tests
-gulp.task('runBackendTests', function(){
-    return gulp.src(backEndUnitTestsGlob)
-        .pipe(mocha());
-});
-
-gulp.task('runFrontendTests', function(){
-    return gulp.src(frontEndUnitTestGlob).pipe(karma({
-        configFile: 'karma.conf.js'
-    }));
-});
-
-gulp.task('runTests', ['runBackendTests', 'runFrontendTests']);
-
 //server controll
 gulp.task('serverStart', function(){
     return server.run([serverInitFile]);
@@ -123,7 +97,7 @@ gulp.task('watch', function(){
     });
 
     //back end changes
-    gulp.watch(['server/**/*.js', 'server/*.js' ], ['serverRestart', 'runBackendTests']);
+    gulp.watch(['server/**/*.js', 'server/*.js' ], ['serverRestart']);
 });
 
 gulp.task('default', [
