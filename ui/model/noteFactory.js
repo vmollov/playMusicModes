@@ -140,7 +140,6 @@ var
 
 module.exports = {
     noteFromFrequency: noteFromFrequency,
-    frequencyForNoteNumber: frequencyForNoteNumber,
     noteFromNumber: noteFromNumber,
     noteFromNameString: noteFromNameString
 };

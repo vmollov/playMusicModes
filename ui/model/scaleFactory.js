@@ -2,7 +2,7 @@
 
 var
     musicModesData = require('./MusicModesData.json'),
-    noteUtil = require('./noteUtil'),
+    noteFactory = require('./noteFactory'),
 
     scalePrototype = {
         extend: function(octaves){
@@ -30,7 +30,7 @@ var
         var
             mode = musicModesData.ModeDefinitions[modeName],
             startingNoteObj = (typeof startingNote === "string")
-                ? noteUtil.noteFromNameString(startingNote)
+                ? noteFactory.noteFromNameString(startingNote)
                 : startingNote,
             pattern = mode.pattern || musicModesData.ModeDefinitions[mode.patternOf].pattern,
             patternDesc = mode.patternDesc || pattern.slice().reverse().map(function(val){ return -val; }),

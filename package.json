@@ -30,13 +30,17 @@
     "karma": "~0.12",
     "karma-chai": "^0.1.0",
     "karma-chai-as-promised": "^0.1.2",
-    "karma-chrome-launcher": "^0.1.12",
+    "karma-chrome-launcher": "^0.2.0",
+    "karma-firefox-launcher": "^0.1.6",
     "karma-junit-reporter": "^0.2.2",
     "karma-mocha": "^0.2.0",
     "karma-sinon": "^1.0.4",
     "mocha": "^2.2.5",
+    "mockery": "^1.4.0",
     "protractor": "^2.1.0",
-    "sinon": "^1.16.1"
+    "requirejs": "^2.1.20",
+    "sinon": "^1.16.1",
+    "sinon-chai": "^2.8.0"
   },
   "dependencies": {
     "angular": "^1.4.4",

@@ -4,12 +4,12 @@ module.exports = function(app){
 
     require('./audioInput')(app);
 
-    app.factory('noteSequenceDetect', ['audioInput',
+    app.factory('noteDetect', ['audioInput',
         function(audioInput){
             var
                 noteSequenceDetector = require('../model/noteSequenceDetector'),
-                scales = require('../model/scales'),
-                CMajorScale = scales.createScale('Major', 'C4'),
+                scaleFactory = require('../model/scaleFactory'),
+                CMajorScale = scaleFactory.createScale('Major', 'C4'),
                 playedScaleAnalyser = require('../model/scaleAnalyser'),
                 scaleAnalyser = playedScaleAnalyser.getAnalyserForScale(CMajorScale,
                     function(){

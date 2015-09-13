@@ -2,21 +2,21 @@
 
 module.exports = function(app){
 
-    require('../services/noteSequenceDetect')(app);
-    require('../model/scales');
+    require('../services/noteDetect')(app);
+    require('../model/scaleFactory');
 
-    app.controller('homeCtrl', ['$scope', 'noteSequenceDetect',
-        function($scope, noteSequenceDetect){
+    app.controller('homeCtrl', ['$scope', 'noteDetect',
+        function($scope, noteDetect){
             var pitchDetectionWatch, scaleAnalyserWatch;
 
             $scope.start = function(){
-                noteSequenceDetect.startScaleDetection($scope);
+                noteDetect.startScaleDetection($scope);
 
                 if(pitchDetectionWatch) return;
 
                 pitchDetectionWatch = $scope.$watch(
                     function() {
-                        return noteSequenceDetect.getDetectedPitches();
+                        return noteDetect.getDetectedPitches();
                     },
                     function(newValue){
                         $scope.detectedPitches = newValue;
@@ -27,7 +27,7 @@ module.exports = function(app){
 
                 scaleAnalyserWatch = $scope.$watch(
                     function(){
-                        return noteSequenceDetect.getCMajorScale();
+                        return noteDetect.getCMajorScale();
                     },
                     function(newValue){
                         $scope.CMajorScale = newValue;
@@ -36,7 +36,7 @@ module.exports = function(app){
 
             };
             $scope.stop = function(){
-                noteSequenceDetect.stopScaleDetection();
+                noteDetect.stopScaleDetection();
                 if(pitchDetectionWatch) {
                     pitchDetectionWatch();
                     pitchDetectionWatch = undefined;

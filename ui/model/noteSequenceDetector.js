@@ -2,7 +2,7 @@
 
 var
     pitchDetector = require('./pitchDetector'),
-    noteUtil = require('./noteUtil'),
+    noteFactory = require('./noteFactory'),
     audioAnalyser,
     detectedPitches,
     timeoutId,
@@ -15,15 +15,16 @@ var
             detectedNote;
 
         if(estimate.foundPitch &&  estimate.freq < 15000){
-            detectedNote = noteUtil.noteFromFrequency(estimate.freq);
+            detectedNote = noteFactory.noteFromFrequency(estimate.freq);
 
-            if (!detectedPitches.length || (detectedNote.midiValue !== detectedPitches[detectedPitches.length - 1].midiValue && !isNoteInProgress)) {
+            if (!detectedPitches.length || detectedNote.midiValue !== detectedPitches[detectedPitches.length - 1].midiValue || !isNoteInProgress) {
                 //new pitch detected - add it to the collection
                 detectedNote.centsOffTimeProgression = [];
                 detectedPitches.push(detectedNote);
                 isNoteInProgress = true;
 
                 onNoteDetectFn(detectedNote);
+                console.log('detected nopte', detectedNote);
             }
 
             //add the newly detected centsOff to the pitch

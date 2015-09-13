@@ -8,6 +8,7 @@ var
             if(this.finalizeTimer) {
                 clearTimeout(this.finalizeTimer);
             }
+            console.log('finalizing analyzer');
             if(this.onComplete){
                 this.onComplete();
             }
@@ -55,22 +56,26 @@ var
             this.resetCompletionTimer(3);
 
             //determine whether to extend the scale by another octave
-            if(previousPlayedNote && note.midiValue > previousPlayedNote.midiValue && this.matchIndexTracking.ascending === this.scale.ascending.length - 1){
+            if(previousPlayedNote && note.midiValue > previousPlayedNote.midiValue && this.matchIndexTracking.ascending === this.scale.ascending.length - 1 && this.matchingIndexTracking.descending === -1){
                 this.scale.extend();
             }
 
-            //todo: this logic needs improvement/optimization
+            //todo: this logic needs improvement/optimization - checkMatch() should return scale completion status
             //determine whether to checkMatch for ascending or descending
             if(!previousPlayedNote || (this.matchIndexTracking.ascending < this.scale.ascending.length - 1)){
                 return checkMatch(this.scale.ascending, "ascending");
             }
-            if(this.matchIndexTracking.ascending === this.scale.ascending.length -1 && this.matchIndexTracking.descending < this.ascale.descending.length - 1){
-                return checkMatch(this.scale.descending, "descending");
-            }
+            if(this.matchIndexTracking.ascending === this.scale.ascending.length -1 && this.matchIndexTracking.descending < this.scale.descending.length - 1){
+                var match = checkMatch(this.scale.descending, "descending");
 
-            //terminate if end of scale is reached
-            if(this.matchIndexTracking.descending === this.scale.descending.length - 1){
-                return this.finalize();
+                //terminate if end of scale is reached
+                console.log('setting final timeout', this.matchIndexTracking.descending === this.scale.descending.length - 1);
+                if(this.matchIndexTracking.descending === this.scale.descending.length - 1){
+                    console.log('setting');
+                    setTimeout(this.finalize);
+                }
+
+                return match;
             }
         }
     },
