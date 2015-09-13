@@ -14,14 +14,7 @@ var
             estimate = pitchDetector.detect(audioAnalyser),
             detectedNote;
 
-        if(!estimate.foundPitch ||  estimate.freq > 15000){
-            if(isNoteInProgress && onNoteDetectFn){ //note was in progress but now it's done, so use the onNoteDetectFn and pass it in
-                onNoteDetectFn(detectedPitches[detectedPitches.length - 1]);
-            }
-
-            isNoteInProgress = false;
-        }
-        else{ //interesting pitch detected
+        if(estimate.foundPitch &&  estimate.freq < 15000){
             detectedNote = noteUtil.noteFromFrequency(estimate.freq);
 
             if (!detectedPitches.length || (detectedNote.midiValue !== detectedPitches[detectedPitches.length - 1].midiValue && !isNoteInProgress)) {
@@ -29,10 +22,15 @@ var
                 detectedNote.centsOffTimeProgression = [];
                 detectedPitches.push(detectedNote);
                 isNoteInProgress = true;
+
+                onNoteDetectFn(detectedNote);
             }
 
             //add the newly detected centsOff to the pitch
             detectedPitches[detectedPitches.length - 1].centsOffTimeProgression.push(detectedNote.centsOff);
+        }
+        else{
+            isNoteInProgress = false;
         }
 
         timeoutId = setTimeout(updatePitch);

@@ -12,6 +12,13 @@ var
                 this.onComplete();
             }
         },
+        resetCompletionTimer: function(seconds){
+            //if no activity is detected on this analyser for this specified amount of time it will be finalized
+            if(this.finalizeTimer) {
+                clearTimeout(this.finalizeTimer);
+            }
+            this.finalizeTimer = setTimeout(this.finalize, seconds * 1000);
+        },
         addPlayedNote: function(note){
             var
                 previousPlayedNote = this.played.notes.length
@@ -21,12 +28,10 @@ var
                 checkMatch = function(arrNotes, scaleDirection){
                     var
                         i,
-                        len = arrNotes.length,
-                        matchFound = false;
+                        len = arrNotes.length;
 
                     for(i = this.matchIndexTracking[scaleDirection] + 1; i < len; i++){
                         if(note.nameBase === arrNotes[i].nameBase && (note.octave === arrNotes[i].octave + this.played.octaveOffset || this.played.octaveOffset === undefined)){
-                            matchFound = true;
                             arrNotes[i].playedMatch = note;
                             this.matchIndexTracking[scaleDirection] = i;
 
@@ -34,11 +39,11 @@ var
                                 this.played.octaveOffset = note.octave - arrNotes[i].octave;
                             }
 
-                            break;
+                            return true;
                         }
                     }
 
-                    return matchFound;
+                    return false;
                 }.bind(this);
 
             if(this.completed){
@@ -47,31 +52,26 @@ var
             }
 
             this.played.notes.push(note);
+            this.resetCompletionTimer(3);
 
             //determine whether to extend the scale by another octave
             if(previousPlayedNote && note.midiValue > previousPlayedNote.midiValue && this.matchIndexTracking.ascending === this.scale.ascending.length - 1){
                 this.scale.extend();
             }
 
-            //check ascending
-            if(checkMatch(this.scale.ascending, "ascending")){//todo: improve this condition checking
-                return;
+            //todo: this logic needs improvement/optimization
+            //determine whether to checkMatch for ascending or descending
+            if(!previousPlayedNote || (this.matchIndexTracking.ascending < this.scale.ascending.length - 1)){
+                return checkMatch(this.scale.ascending, "ascending");
             }
-            //check descending
-            if(checkMatch(this.scale.descending, "descending")){
-                return;
+            if(this.matchIndexTracking.ascending === this.scale.ascending.length -1 && this.matchIndexTracking.descending < this.ascale.descending.length - 1){
+                return checkMatch(this.scale.descending, "descending");
             }
 
             //terminate if end of scale is reached
             if(this.matchIndexTracking.descending === this.scale.descending.length - 1){
                 return this.finalize();
             }
-
-            //reset the completion timer
-            if(this.finalizeTimer) {
-                clearTimeout(this.finalizeTimer);
-            }
-            this.finalizeTimer = setTimeout(this.finalize, 3 * 1000);
         }
     },
 
