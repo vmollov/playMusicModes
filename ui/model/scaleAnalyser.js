@@ -1,6 +1,8 @@
 'use strict';
 
 var
+    scaleDirection = require('./scale').scaleDirection,
+
     analyserPrototype = {
         finalize: function(){
             this.completed = true;
@@ -8,13 +10,12 @@ var
             if(this.finalizeTimer) {
                 clearTimeout(this.finalizeTimer);
             }
-            console.log('finalizing analyzer');
+
             if(this.onComplete){
                 this.onComplete();
             }
         },
         resetCompletionTimer: function(seconds){
-            //if no activity is detected on this analyser for this specified amount of time it will be finalized
             if(this.finalizeTimer) {
                 clearTimeout(this.finalizeTimer);
             }
@@ -22,19 +23,20 @@ var
         },
         addPlayedNote: function(note){
             var
-                previousPlayedNote = this.played.notes.length
-                    ? this.played.notes[this.played.notes.length - 1]
-                    : null,
+                previousPlayedNoteNumber = this.played.notes.length
+                    ? this.played.notes[this.played.notes.length - 1].midiValue
+                    : Infinity,
 
-                checkMatch = function(arrNotes, scaleDirection){
+                matchNoteToScale = function(scaleDirection){
                     var
                         i,
+                        arrNotes = this.scale[scaleDirection],
                         len = arrNotes.length;
 
-                    for(i = this.matchIndexTracking[scaleDirection] + 1; i < len; i++){
+                    for(i = this.matchTracking.indexes[scaleDirection] + 1; i < len; i++){
                         if(note.nameBase === arrNotes[i].nameBase && (note.octave === arrNotes[i].octave + this.played.octaveOffset || this.played.octaveOffset === undefined)){
                             arrNotes[i].playedMatch = note;
-                            this.matchIndexTracking[scaleDirection] = i;
+                            this.matchTracking.indexes[scaleDirection] = i;
 
                             if(this.played.octaveOffset === undefined){ //set the octave offset on first match
                                 this.played.octaveOffset = note.octave - arrNotes[i].octave;
@@ -53,25 +55,22 @@ var
             }
 
             this.played.notes.push(note);
-            this.resetCompletionTimer(3);
+            this.resetCompletionTimer(this.options.timeoutSeconds);
 
             //determine whether to extend the scale by another octave
-            if(previousPlayedNote && note.midiValue > previousPlayedNote.midiValue && this.matchIndexTracking.ascending === this.scale.ascending.length - 1 && this.matchingIndexTracking.descending === -1){
+            if(note.midiValue > previousPlayedNoteNumber && this.matchTracking.ascendingComplete && !this.matchTracking.descendingStarted){
                 this.scale.extend();
             }
 
-            //todo: this logic needs improvement/optimization - checkMatch() should return scale completion status
-            //determine whether to checkMatch for ascending or descending
-            if(!previousPlayedNote || (this.matchIndexTracking.ascending < this.scale.ascending.length - 1)){
-                return checkMatch(this.scale.ascending, "ascending");
+            //determine whether to matchNoteToScale for ascending or descending
+            if(this.check.ascending && !this.matchTracking.ascendingComplete){
+                return matchNoteToScale("ascending");
             }
-            if(this.matchIndexTracking.ascending === this.scale.ascending.length -1 && this.matchIndexTracking.descending < this.scale.descending.length - 1){
-                var match = checkMatch(this.scale.descending, "descending");
+            if(this.check.descending && !this.matchTracking.descendingComplete){
+                var match = matchNoteToScale("descending");
 
                 //terminate if end of scale is reached
-                console.log('setting final timeout', this.matchIndexTracking.descending === this.scale.descending.length - 1);
-                if(this.matchIndexTracking.descending === this.scale.descending.length - 1){
-                    console.log('setting');
+                if(this.matchTracking.descendingComplete){
                     setTimeout(this.finalize);
                 }
 
@@ -80,21 +79,57 @@ var
         }
     },
 
-    getAnalyserForScale = function(scale, onCompleteHandler){
+    getAnalyserForScale = function(scale, conf, onCompleteHandler){
         var analyser = Object.create(analyserPrototype);
 
         analyser.scale = scale;                     //the scale to analyze
+        analyser.completed = false;                 //analysis completion flag
+        analyser.finalizeTimer = undefined;         //finalization trigger timer - upon no notes received for a specified amount of time
         analyser.onComplete = onCompleteHandler;    //done callback
+        analyser.options = conf;                    //configuration options
         analyser.played = {                         //what was played
             octaveOffset: undefined,
-            notes: []
+            notes: [],
+            get repeatedTopNote(){
+                //tracks whether the top note was played twice when both ascending and descending are analyzed
+                return analyser.check.ascending
+                    && analyser.check.descending
+                    && analyser.matchTracking.ascendingComplete
+                    && analyser.matchTracking.descendingStarted
+                    && !analyser.scale.descending[0].playedMatch;
+            }
         };
-        analyser.matchIndexTracking = {             //analysis tracking
-            ascending: -1,
-            descending: -1
+
+        //set options defaults
+        analyser.options.timeoutSeconds = conf.timeoutSeconds || 3;
+        analyser.check = {
+            get ascending(){
+                return conf.direction === scaleDirection.ASCENDING || scaleDirection.BOTH;
+            },
+            get descending(){
+                return conf.direction === scaleDirection.DESCENDING || scaleDirection.BOTH;
+            }
         };
-        analyser.completed = false;                 //analysis completion flag
-        analyser.finalizeTimer = undefined;         //finalization trigger timer - upon no notes received
+
+        //analysis tracking
+        analyser.matchTracking = {
+            indexes: {
+                ascending: -1,
+                descending: -1
+            },
+            get ascendingComplete(){
+                return this.indexes.ascending === analyser.scale.ascending.length - 1;
+            },
+            get descendingComplete(){
+                return this.indexes.descending === analyser.scale.descending.length - 1;
+            },
+            get ascendingStarted(){
+                return this.indexes.ascending > -1;
+            },
+            get descendingStarted(){
+                return this.indexes.descending > -1;
+            }
+        };
 
         return analyser;
     };

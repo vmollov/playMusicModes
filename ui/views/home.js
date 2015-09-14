@@ -3,7 +3,6 @@
 module.exports = function(app){
 
     require('../services/noteDetect')(app);
-    require('../model/scaleFactory');
 
     app.controller('homeCtrl', ['$scope', 'noteDetect',
         function($scope, noteDetect){

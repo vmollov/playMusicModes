@@ -1,6 +1,6 @@
 'use strict';
 
-describe('noteFactory', function(){
+describe('note', function(){
     describe('noteFromFrequency', function(){
         it('should return a note object from a given frequency', function(){
 

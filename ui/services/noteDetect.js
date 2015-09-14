@@ -8,10 +8,10 @@ module.exports = function(app){
         function(audioInput){
             var
                 noteSequenceDetector = require('../model/noteSequenceDetector'),
-                scaleFactory = require('../model/scaleFactory'),
-                CMajorScale = scaleFactory.createScale('Major', 'C4'),
+                scale = require('../model/scale'),
+                CMajorScale = scale.createScale('Major', 'C4'),
                 playedScaleAnalyser = require('../model/scaleAnalyser'),
-                scaleAnalyser = playedScaleAnalyser.getAnalyserForScale(CMajorScale,
+                scaleAnalyser = playedScaleAnalyser.getAnalyserForScale(CMajorScale, scale.scaleDirection.BOTH,
                     function(){
                         console.log('done analyzing scale');
                     }
@@ -25,6 +25,7 @@ module.exports = function(app){
                     }
                 };
 
+            window.sa = scaleAnalyser;
             return {
                 startScaleDetection: function(scopeObj){ //caller scope
                     callerScope = scopeObj;
