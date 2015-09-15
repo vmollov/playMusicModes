@@ -1,52 +1,43 @@
 module.exports = function(config){
     'use strict';
+
     config.set({
-
         basePath : '',
-
         files : [
-            'node_modules/requirejs/require.js',
-            'node_modules/angular/angular.js',
+            'ui/main.js',
+            //'node_modules/angular/angular.js',
             'node_modules/angular-mocks/angular-mocks.js',
-            'node_modules/angular-route/angular-route.js',
-            'ui/services/**/*.js',
-            'ui/directives/**/*.js',
-            'ui/views/**/*.js',
+            //'node_modules/angular-route/angular-route.js',
+            'ui/main.js',
             'ui/**/*.mspec.js'
         ],
-
-        exclude: [
-        ],
-
+        exclude: [],
         preprocessors: {
-            'src/public/js/directives/*.html': ['ng-html2js']
+            'ui/main.js': ['browserify'],
+            'ui/model/**/*.js': ['browserify']
+            //'src/public/js/directives/*.html': ['ng-html2js']
         },
-
+        browserify: {
+            baseDir: '',
+            //debug: true,
+            paths: ['ui/model'],
+            bundleDelay: 1000
+        },
         ngHtml2JsPreprocessor: {
             stripPrefix: 'src/public',
             moduleName: 'templates'
         },
-
         autoWatch : true,
-
-        frameworks: ['mocha', 'chai-as-promised', 'chai', 'sinon'],
-        //frameworks: ['mocha', 'chai-as-promised', 'sinon', 'sinon-chai', 'chai'],
-
+        singleRun : false,
+        frameworks: ['mocha', 'chai-as-promised', 'chai', 'sinon', 'browserify'],
         browsers : ['Chrome'],
-
         plugins : [
+            'karma-browserify',
             'karma-mocha',
             'karma-chai',
             'karma-chai-as-promised',
             'karma-sinon',
-            'karma-chrome-launcher',
-            'karma-junit-reporter'
-        ],
-
-        junitReporter : {
-            outputFile: 'unit.xml',
-            suite: 'unit'
-        }
-
+            'karma-chrome-launcher'
+        ]
     });
 };
