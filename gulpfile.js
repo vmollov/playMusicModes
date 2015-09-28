@@ -65,6 +65,13 @@ gulp.task('compileJs', function(){
         .pipe(gulp.dest('public/'));
 });
 
+//tests
+gulp.task('uTestModel', function(){
+    return gulp.src('ui/model/**/*.mspec.js')
+        .pipe(mocha())
+        .on('error', errorHandler);
+});
+
 //server controll
 gulp.task('serverStart', function(){
     return server.run([serverInitFile]);
@@ -78,26 +85,19 @@ gulp.task('serverRestart', function(){
 gulp.task('watch', function(){
     //front end changes
     gulp.watch([
-        'ui/*.js',
         'ui/**/*.js',
         'ui/**/*.html'
-    ], ['compileJs']);
+    ], ['compileJs', 'uTestModel']);
 
-    gulp.watch([
-        'ui/*.less',
-        'ui/**/*.less'
-    ], ['compileLess']);
-
-    gulp.watch([
-        'ui/index.html'
-    ], ['compileHtml']);
+    gulp.watch(['ui/**/*.less'], ['compileLess']);
+    gulp.watch(['ui/index.html'], ['compileHtml']);
 
     gulp.watch(['public/*'], function(event){
         server.notify(event);
     });
 
     //back end changes
-    gulp.watch(['server/**/*.js', 'server/*.js' ], ['serverRestart']);
+    gulp.watch(['server/**/*.js'], ['serverRestart']);
 });
 
 gulp.task('default', [
@@ -105,5 +105,6 @@ gulp.task('default', [
     'compileLess',
     'compileHtml',
     'serverStart',
+    'uTestModel',
     'watch'
 ]);

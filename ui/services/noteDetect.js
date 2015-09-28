@@ -25,7 +25,6 @@ module.exports = function(app){
                     }
                 };
 
-            window.sa = scaleAnalyser;
             return {
                 startScaleDetection: function(scopeObj){ //caller scope
                     callerScope = scopeObj;

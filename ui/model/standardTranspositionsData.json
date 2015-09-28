@@ -1,0 +1,18 @@
+{
+  "Bf": {
+    "semitones": -2,
+    "steps": -1
+  },
+  "BfClarinet": {
+    "semitones": -2,
+    "steps": -1
+  },
+  "AClarinet":{
+    "semitones": -3,
+    "steps": -2
+  },
+  "Af": {
+    "semitones": -4,
+    "steps": -2
+  }
+}

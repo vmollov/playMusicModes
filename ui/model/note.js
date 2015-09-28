@@ -1,11 +1,16 @@
 'use strict';
-//todo: implement transposition
+
 var
     enharmonics = require('./enharmonicsData.json'),
+    transposerUtil = require('./transposer'),
+    transposer = transposerUtil.getTransposer(),
 
     noteObjectPrototype = {
         get name(){
-            return this.letter + (this.accidental === 'n' ? '' : this.accidental) + this.octave;
+            var transposed = transposer.transpose(this);
+            return this.transposition
+                ? this.transposition.letter + (this.transposition.accidental === 'n' ? '' : this.transposition.accidental) + this.transposition.octave
+                : this.letter + (this.accidental === 'n' ? '' : this.accidental) + this.octave;
         },
         get nameWithAccidental(){
             return this.letter + this.accidental + this.octave;
@@ -141,5 +146,8 @@ var
 module.exports = {
     noteFromFrequency: noteFromFrequency,
     noteFromNumber: noteFromNumber,
-    noteFromNameString: noteFromNameString
+    noteFromNameString: noteFromNameString,
+    setTransposition: transposer.setTransposition,
+    removeTransposition: transposer.removeTransposition,
+    standardTranspositions: transposerUtil.standardTranspositions
 };
