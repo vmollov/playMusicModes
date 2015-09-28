@@ -11,7 +11,7 @@ module.exports = function(app){
                 scale = require('../model/scale'),
                 CMajorScale = scale.createScale('Major', 'C4'),
                 playedScaleAnalyser = require('../model/scaleAnalyser'),
-                scaleAnalyser = playedScaleAnalyser.getAnalyserForScale(CMajorScale, {},
+                scaleAnalyser = playedScaleAnalyser.getAnalyserForScale(CMajorScale, {direction: scale.scaleDirection.BOTH},
                     function(){
                         console.log('done analyzing scale');
                     }

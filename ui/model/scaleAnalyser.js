@@ -104,10 +104,10 @@ var
         analyser.options.timeoutSeconds = conf.timeoutSeconds || 3;
         analyser.check = {
             get ascending(){
-                return conf.direction === scaleDirection.ASCENDING || scaleDirection.BOTH;
+                return conf.direction === scaleDirection.ASCENDING || conf.direction === scaleDirection.BOTH;
             },
             get descending(){
-                return conf.direction === scaleDirection.DESCENDING || scaleDirection.BOTH;
+                return conf.direction === scaleDirection.DESCENDING || conf.direction === scaleDirection.BOTH;
             }
         };
 
