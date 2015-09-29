@@ -1,6 +1,8 @@
 'use strict';
 
 var
+    standardTranspositions = require('./standardTranspositionsData.json'),
+
     transposerSingleton,
     transposition = {
         semitones: 0,
@@ -12,27 +14,20 @@ var
             transposition.semitones = objConf.semitones || 0;
             transposition.steps = objConf.steps || 0;
         },
+        removeTransposition: function(){
+            transposition.semitones = 0;
+            transposition.steps = 0;
+        },
         transpose: function(note){
-            if(transposition.semitones === 0 && transposition.steps === 0){
-                return this.removeTransposition(note);
-            }
-
             var transposedNote = note.buildInterval(transposition.semitones, transposition.steps);
 
-            note.transposition = {
+            return {
                 semitones: transposition.semitones,
                 steps: transposition.steps,
                 letter: transposedNote.letter,
                 accidental: transposedNote.accidental,
                 octave: transposedNote.octave
             };
-
-            return note;
-        },
-        removeTransposition: function(note){
-            delete note.transposition;
-
-            return note;
         }
     };
 
@@ -44,5 +39,5 @@ module.exports = {
 
         return transposerSingleton;
     },
-    standardTranspositions: require('./standardTranspositionsData.json')
+    standardTranspositions: standardTranspositions
 };

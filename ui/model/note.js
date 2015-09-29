@@ -8,15 +8,15 @@ var
     noteObjectPrototype = {
         get name(){
             var transposed = transposer.transpose(this);
-            return this.transposition
-                ? this.transposition.letter + (this.transposition.accidental === 'n' ? '' : this.transposition.accidental) + this.transposition.octave
-                : this.letter + (this.accidental === 'n' ? '' : this.accidental) + this.octave;
+            return transposed.letter + (transposed.accidental === 'n' ? '' : transposed.accidental) + transposed.octave;
         },
         get nameWithAccidental(){
-            return this.letter + this.accidental + this.octave;
+            var transposed = transposer.transpose(this);
+            return transposed.letter + transposed.accidental + transposed.octave;
         },
         get nameBase(){
-            return this.letter + (this.accidental === 'n' ? '' : this.accidental);
+            var transposed = transposer.transpose(this);
+            return transposed.letter + (transposed.accidental === 'n' ? '' : transposed.accidental);
         },
         buildInterval: function(semitones, steps){
             if(this.midiValue + semitones < 1 || this.midiValue + semitones > 130)
@@ -120,7 +120,7 @@ var
         return noteObject;
     },
     noteFromNumber = function(number){
-        if(number < 1 || number > 132) throw Error('Cannot calculate note from number' + number);
+        if(number < 1 || number > 132) throw Error('Cannot calculate note from number ' + number);
 
         var
             noteNumber = number % 12,
@@ -136,7 +136,7 @@ var
                 : 0,
             note = noteFromNumber(number);
 
-        if(!note) throw Error('Cannot calculate note from frequency' + frequency);
+        //if(!note) throw Error('Cannot calculate note from frequency' + frequency);
 
         note.centsOff = Math.floor(1200 * Math.log( frequency / frequencyForNoteNumber(number)) / Math.log(2));
 
