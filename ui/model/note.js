@@ -5,7 +5,7 @@ var
     transposerUtil = require('./transposer'),
     transposer = transposerUtil.getTransposer(),
 
-    noteObjectPrototype = {
+    note = {
         get name(){
             var transposed = transposer.transpose(this);
             return transposed.letter + (transposed.accidental === 'n' ? '' : transposed.accidental) + transposed.octave;
@@ -93,7 +93,7 @@ var
             letter = noteString.substr(0, 1).toUpperCase(),
             accidental = noteString.substr(1, 1).toLowerCase(),
             octave, noteValue, midiValue,
-            noteObject = Object.create(noteObjectPrototype);
+            newNote = Object.create(note);
 
         if(accidental === "s" || accidental === "f" || accidental === "x" || accidental === "d" || accidental === "n"){
             octave = noteString.substr(2, 1);
@@ -112,12 +112,12 @@ var
 
         midiValue = 12 + (octave * 12) + noteValue;
 
-        noteObject.letter = letter;
-        noteObject.accidental = accidental;
-        noteObject.octave = Number(octave);
-        noteObject.midiValue = midiValue;
+        newNote.letter = letter;
+        newNote.accidental = accidental;
+        newNote.octave = Number(octave);
+        newNote.midiValue = midiValue;
 
-        return noteObject;
+        return newNote;
     },
     noteFromNumber = function(number){
         if(number < 1 || number > 132) throw Error('Cannot calculate note from number ' + number);

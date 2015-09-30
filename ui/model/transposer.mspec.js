@@ -14,14 +14,20 @@ chai.use(sinonChai);
 describe('transposer', function(){
     beforeEach(function(){
         mockery.enable({
-            warnOnreplace: true
+            warnOnreplace: false,
+            useCleanCache: true
         });
 
         mockery.registerAllowable('./standardTranspositionsData.json');
         mockery.registerAllowable('./transposer');
+        mockery.registerAllowable('./enharmonicsData.json');
         mockery.registerAllowable('./note');
 
         transposer = require('./transposer');
+    });
+    afterEach(function(){
+        mockery.deregisterAll();
+        mockery.disable();
     });
 
     it('should return a singleton object', function(){
@@ -42,6 +48,7 @@ describe('transposer', function(){
             expect(note.name).to.equal('Bf3');
             transpObj.removeTransposition();
             expect(note.name).to.equal('C4');
+            transpObj.removeTransposition();
         });
     });
     describe('transposer.transpose', function(){
@@ -53,12 +60,12 @@ describe('transposer', function(){
 
             transpObj.setTransposition({ semitones: -3, steps: -2 });
             transposed = transpObj.transpose(note);
-
             expect(transposed).to.have.property('semitones').that.equals(-3);
             expect(transposed).to.have.property('steps').that.equals(-2);
             expect(transposed).to.have.property('letter').that.equals('A');
             expect(transposed).to.have.property('accidental').that.equals('n');
             expect(transposed).to.have.property('octave').that.equals(3);
+            transpObj.removeTransposition();
         });
     });
 });

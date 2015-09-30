@@ -4,7 +4,7 @@ var
     musicModesData = require('./MusicModesData.json'),
     note = require('./note'),
 
-    scalePrototype = {
+    scale = {
         get fullScale(){
             var descendingCopy = this.descending.slice();
             descendingCopy.shift();
@@ -64,7 +64,7 @@ var
         scaleAsc = buildScale(startingNoteObj, pattern, stepPattern, 1);
         scaleDesc = buildScale(scaleAsc[scaleAsc.length - 1], patternDesc, stepPatternDesc, -1);
 
-        outputScale = Object.create(scalePrototype);
+        outputScale = Object.create(scale);
         outputScale.ascending = scaleAsc;
         outputScale.descending = scaleDesc;
         outputScale.modeName = modeName;

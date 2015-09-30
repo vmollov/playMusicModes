@@ -11,10 +11,10 @@ var
 
 chai.use(sinonChai);
 
-describe('scale', function(){
+xdescribe('scale', function(){
     beforeEach(function(){
         mockery.enable({
-            warnOnReplace: true
+            warnOnReplace: false
         });
 
         mockery.registerAllowable('./MusicModesData.json');
@@ -25,6 +25,7 @@ describe('scale', function(){
     });
 
     afterEach(function(){
+        mockery.deregisterAll();
         mockery.disable();
     });
 

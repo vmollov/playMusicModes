@@ -3,7 +3,7 @@
 var
     scaleDirection = require('./scale').scaleDirection,
 
-    analyserPrototype = {
+    analyser = {
         finalize: function(){
             this.completed = true;
 
@@ -80,29 +80,29 @@ var
     },
 
     getAnalyserForScale = function(scale, conf, onCompleteHandler){
-        var analyser = Object.create(analyserPrototype);
+        var newAnalyser = Object.create(analyser);
 
-        analyser.scale = scale;                     //the scale to analyze
-        analyser.completed = false;                 //analysis completion flag
-        analyser.finalizeTimer = undefined;         //finalization trigger timer - upon no notes received for a specified amount of time
-        analyser.onComplete = onCompleteHandler;    //done callback
-        analyser.options = conf;                    //configuration options
-        analyser.played = {                         //what was played
+        newAnalyser.scale = scale;                     //the scale to analyze
+        newAnalyser.completed = false;                 //analysis completion flag
+        newAnalyser.finalizeTimer = undefined;         //finalization trigger timer - upon no notes received for a specified amount of time
+        newAnalyser.onComplete = onCompleteHandler;    //done callback
+        newAnalyser.options = conf;                    //configuration options
+        newAnalyser.played = {                         //what was played
             octaveOffset: undefined,
             notes: [],
             get repeatedTopNote(){
                 //tracks whether the top note was played twice when both ascending and descending are analyzed
-                return analyser.check.ascending
-                    && analyser.check.descending
-                    && analyser.matchTracking.ascendingComplete
-                    && analyser.matchTracking.descendingStarted
-                    && !analyser.scale.descending[0].playedMatch;
+                return newAnalyser.check.ascending
+                    && newAnalyser.check.descending
+                    && newAnalyser.matchTracking.ascendingComplete
+                    && newAnalyser.matchTracking.descendingStarted
+                    && !newAnalyser.scale.descending[0].playedMatch;
             }
         };
 
         //set options defaults
-        analyser.options.timeoutSeconds = conf.timeoutSeconds || 3;
-        analyser.check = {
+        newAnalyser.options.timeoutSeconds = conf.timeoutSeconds || 3;
+        newAnalyser.check = {
             get ascending(){
                 return conf.direction === scaleDirection.ASCENDING || conf.direction === scaleDirection.BOTH;
             },
@@ -112,16 +112,16 @@ var
         };
 
         //analysis tracking
-        analyser.matchTracking = {
+        newAnalyser.matchTracking = {
             indexes: {
                 ascending: -1,
                 descending: -1
             },
             get ascendingComplete(){
-                return this.indexes.ascending === analyser.scale.ascending.length - 1;
+                return this.indexes.ascending === newAnalyser.scale.ascending.length - 1;
             },
             get descendingComplete(){
-                return this.indexes.descending === analyser.scale.descending.length - 1;
+                return this.indexes.descending === newAnalyser.scale.descending.length - 1;
             },
             get ascendingStarted(){
                 return this.indexes.ascending > -1;
@@ -131,7 +131,7 @@ var
             }
         };
 
-        return analyser;
+        return newAnalyser;
     };
 
 module.exports = {

@@ -14,16 +14,31 @@ chai.use(sinonChai);
 describe('note', function(){
     beforeEach(function(){
         mockery.enable({
-            warnOnReplace: true
+            warnOnReplace: false,
+            useCleanCache: true
         });
 
         mockery.registerAllowable('./note');
         mockery.registerAllowable('./enharmonicsData.json');
+        mockery.registerMock('./transposer', {
+            getTransposer: function(){
+                return {
+                    transpose: function(trNote){
+                        return {
+                            letter: trNote.letter,
+                            accidental: trNote.accidental,
+                            octave: trNote.octave
+                        };
+                    }
+                };
+            }
+        });
 
         note = require('./note');
     });
 
     afterEach(function(){
+        mockery.deregisterAll();
         mockery.disable();
     });
 
@@ -131,12 +146,6 @@ describe('note', function(){
             noteObj = note.noteFromNameString('Cx4');
             expect(noteObj).to.have.property('name').that.equals('Cx4');
         });
-        it('should return the transposed value if transposition is set', function(){
-            var noteObj = note.noteFromNameString('C4');
-            note.setTransposition(note.standardTranspositions.BfClarinet);
-            expect(noteObj).to.have.property('name').that.equals('Bf3');
-            note.removeTransposition();
-        });
     });
     describe('note.nameWithAccidental', function(){
         it('should return the standard note name', function(){
@@ -145,12 +154,6 @@ describe('note', function(){
             noteObj = note.noteFromNameString('Cx4');
             expect(noteObj).to.have.property('nameWithAccidental').that.equals('Cx4');
         });
-        it('should return the transposed value if transposition is set', function(){
-            var noteObj = note.noteFromNameString('C4');
-            note.setTransposition(note.standardTranspositions.BfClarinet);
-            expect(noteObj).to.have.property('nameWithAccidental').that.equals('Bf3');
-            note.removeTransposition();
-        });
     });
     describe('note.nameBase', function(){
         it('should return the standard note name', function(){
@@ -158,12 +161,6 @@ describe('note', function(){
             expect(noteObj).to.have.property('nameBase').that.equals('C');
             noteObj = note.noteFromNameString('Cx4');
             expect(noteObj).to.have.property('nameBase').that.equals('Cx');
-        });
-        it('should return the transposed value if transposition is set', function(){
-            var noteObj = note.noteFromNameString('C4');
-            note.setTransposition(note.standardTranspositions.BfClarinet);
-            expect(noteObj).to.have.property('nameBase').that.equals('Bf');
-            note.removeTransposition();
         });
     });
 });
