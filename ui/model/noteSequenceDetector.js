@@ -17,7 +17,7 @@ var
         if(estimate.foundPitch &&  estimate.freq < 15000){
             detectedNote = note.noteFromFrequency(estimate.freq);
 
-            if (!detectedPitches.length || detectedNote.midiValue !== detectedPitches[detectedPitches.length - 1].midiValue || !isNoteInProgress) {
+            if(!detectedPitches.length || detectedNote.midiValue !== detectedPitches[detectedPitches.length - 1].midiValue || !isNoteInProgress){
                 //new pitch detected - add it to the collection
                 detectedNote.centsOffTimeProgression = [];
                 detectedPitches.push(detectedNote);

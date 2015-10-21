@@ -1,0 +1,28 @@
+<div>
+    <button id="startListening" data-ng-click="start()">Listen</button>
+    <button id="stopListening" data-ng-click="stop()">Stop</button>
+</div>
+<div class="tester">
+    <h1>Testing pitch detection</h1>
+    <span data-ng-repeat="note in detectedPitches">
+        {{note.name}}
+        <!--<span data-ng-repeat="centsOff in note.centsOffTimeProgression track by $index">{{centsOff}},</span>-->
+    </span>
+</div>
+
+<div class="tester">
+    <h1>Analysis of C Major</h1>
+    <div>
+        <table>
+            <tr data-ng-repeat="note in CMajorScale.ascending">
+                <td>{{note.name}}</td>
+                <td><span data-ng-if="note.playedMatch">Matched: {{note.playedMatch.name}}</span></td>
+            </tr>
+            <tr data-ng-repeat="note in CMajorScale.descending">
+                <td>{{note.name}}</td>
+                <td><span data-ng-if="note.playedMatch">Matched: {{note.playedMatch.name}}</span></td>
+            </tr>
+        </table>
+
+    </div>
+</div>

@@ -41,6 +41,7 @@ module.exports = function(app){
                 getDetectedPitches: function(){
                     return noteSequenceDetector.getCurrentDetectedPitches();
                 },
+                //todo: this is a stub method
                 getCMajorScale: function(){
                     return CMajorScale;
                 }

@@ -66,11 +66,15 @@ gulp.task('compileJs', function(){
 });
 
 //tests
-gulp.task('uTestModel', function(){
+gulp.task('testModel', function(){
     return gulp.src('ui/model/**/*.mspec.js')
         .pipe(mocha())
         .on('error', errorHandler);
 });
+
+gulp.task('runTests', [
+    'testModel'
+]);
 
 //server controll
 gulp.task('serverStart', function(){
@@ -87,7 +91,7 @@ gulp.task('watch', function(){
     gulp.watch([
         'ui/**/*.js',
         'ui/**/*.html'
-    ], ['compileJs', 'uTestModel']);
+    ], ['compileJs'/*, 'testModel'*/]);
 
     gulp.watch(['ui/**/*.less'], ['compileLess']);
     gulp.watch(['ui/index.html'], ['compileHtml']);
@@ -105,6 +109,5 @@ gulp.task('default', [
     'compileLess',
     'compileHtml',
     'serverStart',
-    'uTestModel',
     'watch'
 ]);

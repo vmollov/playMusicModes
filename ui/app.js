@@ -11,6 +11,10 @@ module.exports = function(moduleName){
                 templateUrl: '/views/home.html',
                 controller: 'homeCtrl'
             });
+            $routeProvider.when('/testing', {
+                templateUrl: '/views/testing.html',
+                controller: 'testingCtrl'
+            });
 
             $routeProvider.otherwise({redirectTo: '/'});
         }]);
