@@ -12,6 +12,7 @@ var
     less = require('gulp-less'),
     mocha = require('gulp-mocha'),
     minifyHtml = require('gulp-minify-html'),
+    open = require('gulp-open'),
     order = require('gulp-order'),
     //processHtml = require('gulp-processhtml'),
     server = require('gulp-express'),
@@ -86,6 +87,11 @@ gulp.task('serverRestart', function(){
     return server.run([serverInitFile]);
 });
 
+gulp.task('openIndex', function () {
+    return gulp.src('public/index.html')
+        .pipe(open({uri: 'http://localhost:9000', app: 'google chrome'}));
+});
+
 gulp.task('watch', function(){
     //front end changes
     gulp.watch([
@@ -109,5 +115,6 @@ gulp.task('default', [
     'compileLess',
     'compileHtml',
     'serverStart',
-    'watch'
+    'watch',
+    'openIndex'
 ]);
