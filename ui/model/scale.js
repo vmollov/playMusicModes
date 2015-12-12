@@ -1,7 +1,7 @@
 'use strict';
 
 var
-    musicModesData = require('./MusicModesData.json'),
+    modeDefinitions = require('./musicModes').getModeDefinitions(),
     note = require('./note'),
 
     scale = {
@@ -30,14 +30,14 @@ var
     },
 
     createScale = function(modeName, startingNote){
-        if(!musicModesData.ModeDefinitions[modeName]) throw Error("Mode not found: " + modeName);
+        if(!modeDefinitions[modeName]) throw Error("Mode not found: " + modeName);
 
         var
-            mode = musicModesData.ModeDefinitions[modeName],
+            mode = modeDefinitions[modeName],
             startingNoteObj = (typeof startingNote === "string")
                 ? note.noteFromNameString(startingNote)
                 : startingNote,
-            pattern = mode.pattern || musicModesData.ModeDefinitions[mode.patternOf].pattern,
+            pattern = mode.pattern || modeDefinitions[mode.patternOf].pattern,
             patternDesc = mode.patternDesc || pattern.slice().reverse().map(function(val){ return -val; }),
             stepPattern = mode.stepPattern || null,
             stepPatternDesc = mode.stepPatternDesc || null,

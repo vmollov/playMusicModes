@@ -1,11 +1,11 @@
 {
   "ModeGroups" : {
-    "3" : "Jazz Scales",
-    "4" : "Other Heptatonic Scales",
-    "5" : "Pentatonic Scales",
-    "1" : "Common Scales",
-    "6" : "Symmetric Scales",
-    "2" : "Ancient Modes"
+    "Common Scales": "1",
+    "Ancient Modes": "2",
+    "Jazz Scales": "3",
+    "Other Heptatonic Scales": "4",
+    "Pentatonic Scales": "5",
+    "Symmetric Scales": "6"
   },
   "ModeDefinitions" : {
     "Natural Minor\/Aeolian" : {

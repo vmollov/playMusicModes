@@ -8,7 +8,7 @@ module.exports = function(app){
         function($scope, noteDetect, Scale){
             var pitchDetectionWatch, scaleAnalyserWatch;
 
-            console.log(Scale);
+            console.log('POC: Scale Angular factory from model', Scale);
 
             $scope.start = function(){
                 noteDetect.startScaleDetection($scope);
