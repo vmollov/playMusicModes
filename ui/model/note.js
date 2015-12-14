@@ -1,9 +1,26 @@
 'use strict';
 
 var
-    enharmonics = require('./enharmonicsData.json'),
-    transposerUtil = require('./transposer'),
-    transposer = transposerUtil.getTransposer(),
+    enharmonics = require('./data/enharmonics'),
+    transposer = require('./transposer'),
+    baseNoteValues = {
+        C: 0,
+        D: 2,
+        E: 4,
+        F: 5,
+        G: 7,
+        A: 9,
+        B: 11
+    },
+    baseNoteToIntMap = {
+        0: "C",
+        1: "D",
+        2: "E",
+        3: "F",
+        4: "G",
+        5: "A",
+        6: "B"
+    },
 
     note = {
         get name(){
@@ -23,20 +40,17 @@ var
                 throw Error("Cannot create note from: Invalid range: " + this.name + ", semitones: " + semitones + ", steps: " + steps);
 
             var
-                startingNoteObjIndex = this.midiValue % 12,
-                targetNoteIndex = (this.midiValue + semitones) % 12,
-                targetNoteBaseSteps = (Number(getBaseValueForNoteName(this.letter)) + steps) % 7,
+                targetNoteBaseSteps = (Number(getBaseNoteNumberForNoteName(this.letter)) + steps) % 7,
                 targetNoteBaseValue = targetNoteBaseSteps < 0
                     ? targetNoteBaseSteps + 7
                     : targetNoteBaseSteps,
-                enharmonicsSet = enharmonics[targetNoteIndex],
-                enharmonicObject = enharmonicsSet[enharmonics.baseNoteToIntMap[targetNoteBaseValue]],
-                targetOctave = enharmonicObject
-                    ? this.octave + Number(enharmonicObject.octaveOffset)
+                targetEnharmonic = enharmonics.getEnharmonic(this.midiValue + semitones, baseNoteToIntMap[targetNoteBaseValue]),
+                targetOctave = targetEnharmonic
+                    ? this.octave + Number(targetEnharmonic.octaveOffset)
                     : undefined,
-                targetNoteNumber = startingNoteObjIndex + semitones;
+                targetNoteNumber = (this.midiValue % 12) + semitones;
 
-            if(!enharmonicObject || !targetOctave)
+            if(!targetEnharmonic || !targetOctave)
                 throw Error("Cannot create note from " + this.name + ", semitones: " + semitones + ", steps: " + steps);
 
             while(targetNoteNumber >= 12){
@@ -48,32 +62,30 @@ var
                 targetNoteNumber += 12;
             }
 
-            return noteFromNameString(enharmonicObject.note + targetOctave);
+            return noteFromNameString(targetEnharmonic.note + targetOctave);
         },
         changeToEnharmonic: function(noteLetter){
-            var
-                thisBaseValue = this.midiValue % 12,
-                thisEnharmonicSet = enharmonics[thisBaseValue];
+            var enharmonic = enharmonics.getEnharmonic(this.midiValue, noteLetter);
 
-            if(!thisEnharmonicSet[noteLetter]) throw Error('No enharmonic of ' + noteLetter + ' exists for ' + this.name);
+            if(!enharmonic) throw Error('No enharmonic of ' + noteLetter + ' exists for ' + this.name);
 
             this.letter = noteLetter;
-            this.accidental = thisEnharmonicSet[noteLetter].note.length === 2
-                ? thisEnharmonicSet[noteLetter].note.substr(1, 1)
+            this.accidental = enharmonic.note.length === 2
+                ? enharmonic.note.substr(1, 1)
                 : 'n';
-            this.octave = this.octave + thisEnharmonicSet[noteLetter].octaveOffset;
+            this.octave = this.octave + enharmonic.octaveOffset;
 
             return this;
         }
     },
 
-    getBaseValueForNoteName = function(noteName){
+    getBaseNoteNumberForNoteName = function(noteName){
         var
-            keys = Object.keys(enharmonics.baseNoteToIntMap),
+            keys = Object.keys(baseNoteToIntMap),
             i = keys.length;
 
         while(i--){
-            if(enharmonics.baseNoteToIntMap[keys[i]] === noteName){
+            if(baseNoteToIntMap[keys[i]] === noteName){
                 return keys[i];
             }
         }
@@ -103,7 +115,7 @@ var
             accidental = "n";
         }
 
-        noteValue = enharmonics.baseNoteValues[letter];
+        noteValue = baseNoteValues[letter];
 
         if(accidental === 's') noteValue++;
         if(accidental === 'x') noteValue = noteValue + 2;
@@ -125,7 +137,7 @@ var
         var
             noteNumber = number % 12,
             octave = Math.floor(number / 12) - 1,
-            noteString = enharmonics[noteNumber].default + octave;
+            noteString = enharmonics.getDefaultEnharmonic(noteNumber) + octave;
 
         return noteFromNameString(noteString);
     },
@@ -143,11 +155,10 @@ var
         return note;
     };
 
-module.exports = {
+module.exports = window.note = {
     noteFromFrequency: noteFromFrequency,
     noteFromNumber: noteFromNumber,
     noteFromNameString: noteFromNameString,
     setTransposition: transposer.setTransposition,
-    removeTransposition: transposer.removeTransposition,
-    standardTranspositions: transposerUtil.standardTranspositions
+    removeTransposition: transposer.removeTransposition
 };

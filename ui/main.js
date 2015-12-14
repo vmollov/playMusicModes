@@ -14,3 +14,6 @@ app.factory('Scale', function(){
 //load views
 require('./views/home')(app);
 require('./views/testing')(app);
+
+require('./model/data/enharmonics');
+require('./model/note');

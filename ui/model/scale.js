@@ -1,7 +1,7 @@
 'use strict';
 
 var
-    modeDefinitions = require('./musicModes').getModeDefinitions(),
+    modeDefinitions = require('./data/musicModes').getModeDefinitions(),
     note = require('./note'),
 
     scale = {

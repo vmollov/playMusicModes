@@ -1,8 +1,6 @@
 'use strict';
 
 var
-    standardTranspositions = require('./standardTranspositionsData.json'),
-
     transposerSingleton,
     transposition = {
         semitones: 0,
@@ -31,13 +29,8 @@ var
         }
     };
 
-module.exports = {
-    getTransposer: function(){
-        if(!transposerSingleton){
-            transposerSingleton = transposer;
-        }
+module.exports = (function(){
+    if(!transposerSingleton) transposerSingleton = transposer;
 
-        return transposerSingleton;
-    },
-    standardTranspositions: standardTranspositions
-};
+    return transposerSingleton;
+})();

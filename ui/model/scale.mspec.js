@@ -17,7 +17,7 @@ xdescribe('scale', function(){
             warnOnReplace: false
         });
 
-        mockery.registerAllowable('./MusicModesData.json');
+        mockery.registerAllowable('./data/musicModes');
         mockery.registerAllowable('./note');
         mockery.registerAllowable('./scale');
 
