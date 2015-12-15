@@ -1,13 +1,16 @@
 'use strict';
 
-require('angular');
+var angular = require('angular');
+
+//load angular modules
 require('angular-route');
 
 module.exports = function(moduleName){
     var app = angular.module(moduleName, ['ngRoute']);
 
-    require('./services/wrappers')(app);
+    require('./services/wrappers')(app); //model wrappers for angular
 
+    //views
     require('./views/home')(app);
     require('./views/testing')(app);
 
