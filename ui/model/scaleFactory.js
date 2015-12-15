@@ -2,7 +2,7 @@
 
 var
     modeDefinitions = require('./data/musicModes').getModeDefinitions(),
-    note = require('./note'),
+    noteFactory = require('./noteFactory'),
 
     scale = {
         get fullScale(){
@@ -35,7 +35,7 @@ var
         var
             mode = modeDefinitions[modeName],
             startingNoteObj = (typeof startingNote === "string")
-                ? note.noteFromNameString(startingNote)
+                ? noteFactory.noteFromNameString(startingNote)
                 : startingNote,
             pattern = mode.pattern || modeDefinitions[mode.patternOf].pattern,
             patternDesc = mode.patternDesc || pattern.slice().reverse().map(function(val){ return -val; }),
@@ -73,10 +73,5 @@ var
     };
 
 module.exports = {
-    createScale: createScale,
-    scaleDirection: {
-        ASCENDING: 0,
-        DESCENDING: 1,
-        BOTH: 2
-    }
+    createScale: createScale
 };

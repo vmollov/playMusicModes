@@ -1,7 +1,7 @@
 'use strict';
 
 var
-    scaleDirection = require('./scale').scaleDirection,
+    scaleDirection = require('./constants').scaleDirection,
 
     analyser = {
         finalize: function(){

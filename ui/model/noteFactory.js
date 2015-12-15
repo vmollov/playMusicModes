@@ -158,7 +158,5 @@ var
 module.exports = window.note = {
     noteFromFrequency: noteFromFrequency,
     noteFromNumber: noteFromNumber,
-    noteFromNameString: noteFromNameString,
-    setTransposition: transposer.setTransposition,
-    removeTransposition: transposer.removeTransposition
+    noteFromNameString: noteFromNameString
 };

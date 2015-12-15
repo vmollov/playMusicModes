@@ -4,18 +4,25 @@ require('angular');
 require('angular-route');
 
 module.exports = function(moduleName){
-    return angular.module(moduleName, ['ngRoute'])
+    var app = angular.module(moduleName, ['ngRoute']);
 
-        .config(['$routeProvider', function($routeProvider) {
-            $routeProvider.when('/', {
-                templateUrl: '/views/home.html',
-                controller: 'homeCtrl'
-            });
-            $routeProvider.when('/testing', {
-                templateUrl: '/views/testing.html',
-                controller: 'testingCtrl'
-            });
+    require('./services/wrappers')(app);
 
-            $routeProvider.otherwise({redirectTo: '/'});
-        }]);
+    require('./views/home')(app);
+    require('./views/testing')(app);
+
+    app.config(['$routeProvider', function($routeProvider) {
+        $routeProvider.when('/', {
+            templateUrl: '/views/home.html',
+            controller: 'homeCtrl'
+        });
+        $routeProvider.when('/testing', {
+            templateUrl: '/views/testing.html',
+            controller: 'testingCtrl'
+        });
+
+        $routeProvider.otherwise({redirectTo: '/'});
+    }]);
+
+    return app;
 };

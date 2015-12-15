@@ -2,7 +2,7 @@
 
 var
     pitchDetector = require('./pitchDetector'),
-    note = require('./note'),
+    noteFactory = require('./noteFactory'),
     audioAnalyser,
     detectedPitches,
     timeoutId,
@@ -15,7 +15,7 @@ var
             detectedNote;
 
         if(estimate.foundPitch &&  estimate.freq < 15000){
-            detectedNote = note.noteFromFrequency(estimate.freq);
+            detectedNote = noteFactory.noteFromFrequency(estimate.freq);
 
             if(!detectedPitches.length || detectedNote.midiValue !== detectedPitches[detectedPitches.length - 1].midiValue || !isNoteInProgress){
                 //new pitch detected - add it to the collection
