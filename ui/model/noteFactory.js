@@ -155,7 +155,7 @@ var
         return note;
     };
 
-module.exports = window.note = {
+module.exports = {
     noteFromFrequency: noteFromFrequency,
     noteFromNumber: noteFromNumber,
     noteFromNameString: noteFromNameString

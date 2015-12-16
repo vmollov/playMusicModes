@@ -10,7 +10,7 @@ var
         return midiValue % 12;
     };
 
-module.exports = window.en = {
+module.exports = {
     getEnharmonic: function (midiValue, noteName) {
         var enharmonicsSet = getEnharmonicSetForNoteIndex(getNoteBaseIndex(midiValue));
 
