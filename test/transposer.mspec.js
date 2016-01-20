@@ -1,15 +1,11 @@
 'use strict';
 
+require('sinon');
+
 var
-    chai = require('chai'),
-    sinon = require('sinon'),
-    sinonChai = require('sinon-chai'),
-    expect = chai.expect,
+    expect = require('chai').expect,
     mockery = require('mockery'),
-
     transposer, noteFactory;
-
-chai.use(sinonChai);
 
 describe('transposer', function(){
     before(function(){
@@ -19,6 +15,7 @@ describe('transposer', function(){
         });
 
         mockery.registerAllowable('../ui/model/transposer');
+        mockery.registerAllowable('./transposer');
         mockery.registerAllowable('../ui/model/noteFactory');
         mockery.registerAllowable('./data/enharmonics');
         mockery.registerAllowable('./enharmonicsData.json');
@@ -32,15 +29,13 @@ describe('transposer', function(){
     });
 
     it('should return a singleton object', function(){
-        var
-            instance1 = require('../ui/model/transposer'),
-            instance2 = require('../ui/model/transposer');
+        var anotherInstance = require('../ui/model/transposer');
 
-        expect(instance1).to.deep.equal(instance2);
+        expect(anotherInstance).to.deep.equal(transposer);
     });
 
     describe('transposer.setTransposition/transposer.removeTransposition', function(){
-        it('should set transposition', function(){
+        it('should set/remove transposition', function(){
             var note = noteFactory.noteFromNameString('C4');
 
             transposer.setTransposition({semitones: -2, steps: -1});

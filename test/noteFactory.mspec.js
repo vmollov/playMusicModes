@@ -1,15 +1,11 @@
 'use strict';
 
+require("sinon");
+
 var
-    chai = require("chai"),
-    sinon = require("sinon"),
-    sinonChai = require("sinon-chai"),
-    expect = chai.expect,
+    expect = require("chai").expect,
     mockery = require('mockery'),
-
     noteFactory;
-
-chai.use(sinonChai);
 
 describe('noteFactory', function(){
     beforeEach(function(){
