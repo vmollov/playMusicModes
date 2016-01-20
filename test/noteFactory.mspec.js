@@ -18,7 +18,7 @@ describe('noteFactory', function(){
             useCleanCache: true
         });
 
-        mockery.registerAllowable('./noteFactory');
+        mockery.registerAllowable('../ui/model/noteFactory');
         mockery.registerAllowable('./data/enharmonics');
         mockery.registerAllowable('./enharmonicsData.json');
         mockery.registerMock('./transposer', {
@@ -31,7 +31,7 @@ describe('noteFactory', function(){
             }
         });
 
-        noteFactory = require('./noteFactory');
+        noteFactory = require('../ui/model/noteFactory');
     });
 
     afterEach(function(){

@@ -23,10 +23,10 @@ describe('scaleFactory', function(){
         mockery.registerAllowable('./data/enharmonics');
         mockery.registerAllowable('./enharmonicsData.json');
         mockery.registerAllowable('./noteFactory');
-        mockery.registerAllowable('./scaleFactory');
+        mockery.registerAllowable('../ui/model/scaleFactory');
         mockery.registerAllowable('./transposer');
 
-        scaleFactory = require('./scaleFactory');
+        scaleFactory = require('../ui/model/scaleFactory');
     });
 
     afterEach(function(){

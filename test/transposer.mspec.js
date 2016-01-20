@@ -7,7 +7,7 @@ var
     expect = chai.expect,
     mockery = require('mockery'),
 
-    transposer;
+    transposer, noteFactory;
 
 chai.use(sinonChai);
 
@@ -18,12 +18,13 @@ describe('transposer', function(){
             useCleanCache: true
         });
 
-        mockery.registerAllowable('./transposer');
-        mockery.registerAllowable('./noteFactory');
+        mockery.registerAllowable('../ui/model/transposer');
+        mockery.registerAllowable('../ui/model/noteFactory');
         mockery.registerAllowable('./data/enharmonics');
         mockery.registerAllowable('./enharmonicsData.json');
 
-        transposer = require('./transposer');
+        transposer = require('../ui/model/transposer');
+        noteFactory = require('../ui/model/noteFactory');
     });
     after(function(){
         mockery.deregisterAll();
@@ -32,15 +33,15 @@ describe('transposer', function(){
 
     it('should return a singleton object', function(){
         var
-            instance1 = require('./transposer'),
-            instance2 = require('./transposer');
+            instance1 = require('../ui/model/transposer'),
+            instance2 = require('../ui/model/transposer');
 
         expect(instance1).to.deep.equal(instance2);
     });
 
     describe('transposer.setTransposition/transposer.removeTransposition', function(){
         it('should set transposition', function(){
-            var note = require('./noteFactory').noteFromNameString('C4');
+            var note = noteFactory.noteFromNameString('C4');
 
             transposer.setTransposition({semitones: -2, steps: -1});
             expect(note.name).to.equal('Bf3');
@@ -52,7 +53,7 @@ describe('transposer', function(){
     describe('transposer.transpose', function(){
         it('should return a transposition object', function(){
             var
-                note = require('./noteFactory').noteFromNameString('C4'),
+                note = noteFactory.noteFromNameString('C4'),
                 transposed;
 
             transposer.setTransposition({ semitones: -3, steps: -2 });
